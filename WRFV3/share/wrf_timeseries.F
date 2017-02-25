@@ -29,7 +29,8 @@ SUBROUTINE calc_ts_locations( grid )
    REAL :: known_lat, known_lon
    CHARACTER (LEN=132) :: message
    CHARACTER (LEN=24) :: ts_profile_filename
-   CHARACTER (LEN=2), DIMENSION(5) :: ts_file_endings = (/ 'UU', 'VV', 'PH', 'TH', 'QV' /)
+   !! wjc modification 2017-02-25 adding TE output stream to list
+   CHARACTER (LEN=2), DIMENSION(6) :: ts_file_endings = (/ 'UU', 'VV', 'PH', 'TH', 'QV', 'TE' /)
    TYPE (PROJ_INFO) :: ts_proj
    TYPE (grid_config_rec_type) :: config_flags
 
@@ -232,7 +233,8 @@ SUBROUTINE calc_ts_locations( grid )
                CLOSE(UNIT=iunit)
 
                ts_profile_filename = grid%ts_filename(k)
-               DO j=1,5
+               !!! wjc modification 2017-02-25 change allows us to add multiple time series output streams now and in future
+               DO j=1,size(ts_file_endings)
                   ! Create the output files for the vertical profiles, one file for each variable
                   iunit = get_unused_unit()
                   IF ( iunit <= 0 ) THEN
@@ -382,6 +384,8 @@ SUBROUTINE calc_ts( grid )
             grid%ts_gph_profile(n,i,k) = (grid%phb(ix,k,iy)+grid%ph_2(ix,k,iy))/9.81 
             grid%ts_th_profile(n,i,k)  = grid%t_2(ix,k,iy) + 300
             grid%ts_qv_profile(n,i,k)  = grid%moist(ix,k,iy,P_QV)
+            !!! wjc modification 2017-02-27 Populating PBL Profile from variable tke_pbl
+            grid%ts_tke_profile(n,i,k) = grid%tke_pbl(ix,k,iy)
             END DO
 #endif
          grid%ts_u(n,i)    = earth_u
@@ -411,6 +415,8 @@ SUBROUTINE calc_ts( grid )
          grid%ts_gph_profile(n,i,k)   = 1.E30
          grid%ts_th_profile(n,i,k)    = 1.E30
          grid%ts_qv_profile(n,i,k)    = 1.E30
+         !!! wjc modification 2017-02-27 creating _FillValue for ts_tke_profile
+         grid%ts_tke_profile(n,i,k)   = 1.E30
          END DO
 #endif   
          grid%ts_hour(n,i) = 1.E30
@@ -502,7 +508,13 @@ SUBROUTINE write_ts( grid )
    ts_buf(:,:) = grid%ts_qv_profile(:,:,k)
    CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_qv_profile(:,:,k),grid%ts_buf_size*grid%max_ts_locs)
    END DO
-#endif         
+
+   !!! wjc modification 2017-02-25 adding modification to accomodate TKE profile
+   DO k=1,grid%max_ts_level
+   ts_buf(:,:) = grid%ts_tke_profile(:,:,k)
+   CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_tke_profile(:,:,k),grid%ts_buf_size*grid%max_ts_locs)
+   END DO
+#endif
    ts_buf(:,:) = grid%ts_u(:,:)
    CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_u(:,:),grid%ts_buf_size*grid%max_ts_locs)
 
@@ -701,6 +713,27 @@ SUBROUTINE write_ts( grid )
                               grid%ts_qv_profile(n,i,1:grid%max_ts_level)                                       
          END DO
          CLOSE(UNIT=iunit)
+
+         !!! wjc modification 2017-02-25 writing TKE output stream
+         !Write TKE profile to separate file
+         iunit = get_unused_unit()
+            IF ( iunit <= 0 ) THEN
+            CALL wrf_error_fatal('Error in write_ts: could not find a free Fortran unit.')
+            END IF
+         !Recreate filename for turbulent kinetic energy ratio profiles
+         k = LEN_TRIM(ts_profile_filename)
+         WRITE(ts_profile_filename(k-1:k),'(A2)') 'TE'
+
+         OPEN(UNIT=iunit, FILE=TRIM(ts_profile_filename), STATUS='unknown', POSITION='append', FORM='formatted')!
+
+         DO n=1,grid%next_ts_time - 1
+
+            WRITE(UNIT=iunit,FMT=profile_format)  &
+                              grid%ts_hour(n,i),             &
+                              grid%ts_tke_profile(n,i,1:grid%max_ts_level)
+         END DO
+         CLOSE(UNIT=iunit)
+
 #endif   
 
       END DO

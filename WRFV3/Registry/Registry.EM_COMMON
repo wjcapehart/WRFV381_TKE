@@ -676,6 +676,9 @@ state    real   ts_v_profile   ?!k       misc      -         -      -        "TS
 state    real   ts_gph_profile ?!k       misc      -         -      -        "TS_GPH_PROFILE" "Total geopotential height, vertical profile"
 state    real   ts_th_profile  ?!k       misc      -         -      -        "TS_TH_PROFILE"  "Total potential temperature, vertical profile"
 state    real   ts_qv_profile  ?!k       misc      -         -      -        "TS_QV_PROFILE"  "Water vapor mixing ratio, vertical profile"
+####wjc Modification Capehart 2017-02-25 Adding Variable for TKE Profile
+state    real   ts_tke_profile ?!k       misc      -         -      -        "TS_TKE_PROFILE" "Turbulent Kinetic Energy, vertical profile"
+
 
 # urban model variables
 state    real   DZR             l        em      -         Z     r        "DZR"            "THICKNESSES OF ROOF LAYERS"                      "m"
@@ -1674,7 +1677,7 @@ state    real  TMN              ij      misc        1         -     i012rhd=(int
 state    real  TYR              ij      misc        1         -     rd=(interp_mask_field:lu_index,iswater)u=(copy_fcnm)     "TYR"        "ANNUAL MEAN SFC TEMPERATURE"           "K"
 state    real  TYRA             ij      misc        1         -     rd=(interp_mask_field:lu_index,iswater)u=(copy_fcnm)     "TYRA"   "ACCUMULATED YEARLY SFC TEMPERATURE FOR CURRENT YEAR"  "K"
 state    real  TDLY             ij      misc        1         -     rd=(interp_mask_field:lu_index,iswater)u=(copy_fcnm)     "TDLY"     "ACCUMULATED DAILY SFC TEMPERATURE FOR CURRENT DAY"  "K"
-state    real  TLAG             i&j     misc        1         -     d=(interp_mask_field:lu_index,iswater)u=(copy_fcnm)     "TLAG"         "DAILY MEAN SFC TEMPERATURE OF PRIOR DAYS"       "K"
+state    real  TLAG             i&j     misc        1         -     rd=(interp_mask_field:lu_index,iswater)u=(copy_fcnm)     "TLAG"         "DAILY MEAN SFC TEMPERATURE OF PRIOR DAYS"       "K"
 state    integer NYEAR          -       misc        1         -     r        "NYEAR"                  "ACCUM DAYS IN A YEAR"                         ""
 state    real    NDAY           -       misc        1         -     r        "NDAY"                  "ACCUM TIMESTEPS IN A DAY"                      ""
 state    real  XLAND            ij      misc        1         -     i02rhd=(interp_fcnm_imask)u=(copy_fcnm)       "XLAND"                 "LAND MASK (1 FOR LAND, 2 FOR WATER)"          ""      

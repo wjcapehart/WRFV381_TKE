@@ -676,6 +676,9 @@ state    real   ts_v_profile   ?!k       misc      -         -      -        "TS
 state    real   ts_gph_profile ?!k       misc      -         -      -        "TS_GPH_PROFILE" "Total geopotential height, vertical profile"
 state    real   ts_th_profile  ?!k       misc      -         -      -        "TS_TH_PROFILE"  "Total potential temperature, vertical profile"
 state    real   ts_qv_profile  ?!k       misc      -         -      -        "TS_QV_PROFILE"  "Water vapor mixing ratio, vertical profile"
+####wjc Modification Capehart 2017-02-25 Adding Variable for TKE Profile
+state    real   ts_tke_profile ?!k       misc      -         -      -        "TS_TKE_PROFILE" "Turbulent Kinetic Energy, vertical profile"
+
 
 # urban model variables
 state    real   DZR             l        em      -         Z     r        "DZR"            "THICKNESSES OF ROOF LAYERS"                      "m"

@@ -238,9 +238,10 @@ do ss = 0, dimsizes(station_id)-1
       tsoil@units         = "K"
 
    tslb = data(:,15)
-      tslb@long_name     = "Deep Soil Reservoir Temperature"
-      tslb@description   = "Deep Soil Reservoir Temperature"
+      tslb@long_name     = "Topmost Soil Layer Temperature"
+      tslb@description   = "Topmost Soil Layer Temperature"
       tslb@standard_name = "soil_temperature"
+      tslb@comment1      = "depth from surface to 10 cm below surface for NOAH land model"
       tslb@units         = "K"
 
    rainc = data(:,16)
@@ -315,10 +316,27 @@ do ss = 0, dimsizes(station_id)-1
       v_profile!1     = "sigma"
       v_profile&sigma = sigma
 
-   v_profile@long_name     = "Northward Speed"
-   v_profile@description   = "Northward Speed"
+   v_profile@long_name     = "Northward Wind Speed"
+   v_profile@description   = "Northward Wind Speed"
    v_profile@standard_name = "northward_wind"
    v_profile@units         = "m s-1"
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+   wind_speed_profile = v_profile
+   wind_speed_profile(:,:) = (/  v_profile*v_profile + u_profile*u_profile /)
+   wind_speed_profile@long_name     = "Wind Speed"
+   wind_speed_profile@description   = "Wind Speed"
+   wind_speed_profile@standard_name = "wind_speed"
+   wind_speed_profile@units         = "m s-1"
+
+   wind_dir_profile = v_profile
+   wind_dir_profile(:,:) = (/ atan2(-u_profile, -v_profile /)
+   wind_dir_profile@long_name     = "Wind Direction"
+   wind_dir_profile@description   = "Wind Direction"
+   wind_dir_profile@standard_name = "wind_from_direction"
+   wind_dir_profile@units         = "degree"
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -468,12 +486,16 @@ end if
     nc->clw         = clw
     nc->ptop        = ptop
     
-    nc->u_profile                           = u_profile
-    nc->v_profile                           = v_profile
+    nc->u_wind_profile                           = u_profile
+    nc->v_wind_profile                      = v_profile
+    nc->wind_speed_profile                  = wind_speed_profile
+    nc->wind_direction_profile              = wind_dir_profile
     nc->potential_temperature_profile       = potential_temperature_profile
     nc->specific_humidity_profile           = specific_humidity_profile
     nc->geopotential_height_profile         = geopotential_height_profile
-    ;; nc->turbulent_kinetic_energy_profile = turbulent_kinetic_energy_profile
+    if (tke_on) then
+       nc->turbulent_kinetic_energy_profile = turbulent_kinetic_energy_profile
+    end if
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

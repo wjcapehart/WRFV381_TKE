@@ -26,7 +26,14 @@ begin
 
     tke_on = False
 
-    station_id =  (/ "FYGF" , "CRSV"/)
+    station_id =  (/ "CRSV", \
+                     "FYGB", \
+                     "FYGF", \
+                     "FYOO", \
+                     "FYOW", \
+                     "FYWH", \
+                     "FYWB", \
+                     "FYRU"  /)
 
 
     f_wrf = addfile(dir_for_wrf_output + wrf_full_model_file + ".nc", "r")
@@ -332,7 +339,7 @@ do ss = 0, dimsizes(station_id)-1
    wind_speed_profile@units         = "m s-1"
 
    wind_dir_profile = v_profile
-   wind_dir_profile(:,:) = (/ atan2(-u_profile, -v_profile /)
+   wind_dir_profile(:,:) = (/ atan2(-u_profile, -v_profile) /)
    wind_dir_profile@long_name     = "Wind Direction"
    wind_dir_profile@description   = "Wind Direction"
    wind_dir_profile@standard_name = "wind_from_direction"

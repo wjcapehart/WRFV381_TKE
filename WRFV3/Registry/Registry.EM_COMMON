@@ -678,6 +678,9 @@ state    real   ts_th_profile  ?!k       misc      -         -      -        "TS
 state    real   ts_qv_profile  ?!k       misc      -         -      -        "TS_QV_PROFILE"  "Water vapor mixing ratio, vertical profile"
 ####wjc Modification Capehart 2017-02-25 Adding Variable for TKE Profile
 state    real   ts_tke_profile ?!k       misc      -         -      -        "TS_TKE_PROFILE" "Turbulent Kinetic Energy, vertical profile"
+####wjc Modification Capehart 2017-04-28 Adding Variable for Soil Profile
+state    real   ts_sh20_profile ?!l       misc      -         -      -        "TS_SH2O_PROFILE" "Soil Liquid Water, vertical profile"
+state    real   ts_tslb_profile ?!l       misc      -         -      -        "TS_TSLB_PROFILE" "Soil Temperature, vertical profile"
 
 
 # urban model variables

@@ -3,8 +3,8 @@
 ;
 ; NCL Libraries
 ;
-load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"   
-load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl"   
+load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
+load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/wrf/WRF_contributed.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
@@ -24,7 +24,8 @@ begin
 
     wrf_full_model_file =  "wrfout_d03_2016-03-05_00:00:00"
 
-    tke_on = False
+    tke_on   = True
+    soils_on = True
 
     station_id =  (/ "CRSV", \
                      "FYGB", \
@@ -37,27 +38,40 @@ begin
 
 
     f_wrf = addfile(dir_for_wrf_output + wrf_full_model_file + ".nc", "r")
-         sigmas   = f_wrf->ZNU(0,:)
-         wrf_elev = f_wrf->HGT(0,:,:)
+
+    sigmas      = f_wrf->ZNU(0,:)
+
+    wrf_elev    = f_wrf->HGT(0,:,:)
+
+    soil_levels = f_wrf->ZS(0,:)
+       delete(soil_levels@stagger)
+       delete(soil_levels@FieldType)
+       delete(soil_levels@MemoryOrder)
+       soil_levels!0             = "soil_levels"
+       soil_levels&soil_levels   = soil_levels
+       soil_levels@standard_name = "depth"
+       soil_levels@long_name     = "Depths of Center of the Soil Layers"
+       soil_levels@description   = "Depths of Center of the Soil Layers"
+       soil_levels@units         = "m"
 
 
-    wrf_time =    wrf_times_c(f_wrf->Times, 0 )
+    wrf_time     = wrf_times_c(f_wrf->Times, 0 )
 
     wrf_utc_date = cd_calendar(wrf_time(0), -5)
 
 
 
     ptop = (/ f_wrf->P_TOP(0) /) ; Pa.
-    ptop@long_name = "Pressure at Top of Model Space"
-    ptop@description = "Pressure at Top of Model Space"
+    ptop@long_name     = "Pressure at Top of Model Space"
+    ptop@description   = "Pressure at Top of Model Space"
     ptop@standard_name = "air_pressure"
-    ptop@units     = "Pa"
-    ptop!0         = "ptop"
-    ptop&ptop      =  ptop
+    ptop@units         = "Pa"
+    ptop!0             = "ptop"
+    ptop&ptop          =  ptop
 
 
     nlevels = 15
-    
+
     sigma               = (/ sigmas(0:nlevels-1) /)
     sigma!0             = "sigma"
     sigma&sigma         = sigma
@@ -83,7 +97,7 @@ begin
                  sprinti("%0.2i",  wrf_utc_date(0,2))
 
     hourstring = sprinti("%0.2i",  wrf_utc_date(0,3))
-  
+
     ; these match the time series file names
 
 
@@ -130,7 +144,7 @@ do ss = 0, dimsizes(station_id)-1
       time@units         = "hours since "+ datestring + " "+  hourstring + ":00:00"
       time!0             = "time"
       time&time          = time
-   
+
    print("maxtime = "+max(time))
 
 
@@ -146,7 +160,7 @@ do ss = 0, dimsizes(station_id)-1
      grid_y@long_name = "WRF Y Coordinate"
      grid_y@description = "WRF Y Coordinate"
 
-   
+
    data!0 = "time"
    data&time = time
    data@lat = latitude_wrf
@@ -157,7 +171,7 @@ do ss = 0, dimsizes(station_id)-1
    data@domain = domain
    data@grid_x = grid_x
    data@grid_y = grid_y
-   
+
 
    temperature = data(:,5)
       temperature@long_name     = "2-m Air Temperature"
@@ -190,7 +204,7 @@ do ss = 0, dimsizes(station_id)-1
       psfc@description   = "Mean Sea Level Pressure"
       psfc@standard_name = "air_pressure_at_sea_level"
       psfc@units         = "Pa"
-   
+
    rh=temperature
    rh(:) = relhum(temperature, w, psfc)
       rh@long_name     = "2-m relative humidity"
@@ -218,38 +232,38 @@ do ss = 0, dimsizes(station_id)-1
       glw@description   = "Surface Downward Longwave Radiation"
       glw@standard_name = "surface_net_downward_longwave_flux"
       glw@units         = "W m-2"
-   
+
 
    gsw = data(:,11)
       gsw@long_name     = "Surface Downward Shortwave Radiation"
       gsw@description   = "Surface Downward Shortwave Radiation"
       gsw@standard_name = "surface_net_downward_shortwave_flux"
       gsw@units         = "W m-2"
-      
+
    hfx = data(:,12)
       hfx@long_name     = "Surface Sensible Heat Flux"
       hfx@description   = "Surface Sensible Heat Flux"
       hfx@standard_name = "surface_upward_sensible_heat_flux"
       hfx@units         = "W m-2"
-   
+
    lfx = data(:,13)
       lfx@long_name     = "Surface Latent Heat Flux"
       lfx@description   = "Surface Latent Heat Flux"
       lfx@standard_name = "surface_upward_latent_heat_flux"
       lfx@units         = "W m-2"
 
-   tsoil = data(:,14)
-      tsoil@long_name     = "Surface Skin Temperature"
-      tsoil@description   = "Surface Skin Temperature"
-      tsoil@standard_name = "surface_temperature"
-      tsoil@units         = "K"
+   tskin = data(:,14)
+      tskin@long_name     = "Surface Skin Temperature"
+      tskin@description   = "Surface Skin Temperature"
+      tskin@standard_name = "surface_temperature"
+      tskin@units         = "K"
 
-   tslb = data(:,15)
-      tslb@long_name     = "Topmost Soil Layer Temperature"
-      tslb@description   = "Topmost Soil Layer Temperature"
-      tslb@standard_name = "soil_temperature"
-      tslb@comment1      = "depth from surface to 10 cm below surface for NOAH land model"
-      tslb@units         = "K"
+   tsoil_top = data(:,15)
+      tsoil_top@long_name     = "Topmost Soil Layer Temperature"
+      tsoil_top@description   = "Topmost Soil Layer Temperature"
+      tsoil_top@standard_name = "soil_temperature"
+      tsoil_top@comment1      = "depth from surface to 10 cm below surface for NOAH land model"
+      tsoil_top@units         = "K"
 
    rainc = data(:,16)
       rainc@long_name     = "Cumulus Cumulative Precipitation"
@@ -257,7 +271,7 @@ do ss = 0, dimsizes(station_id)-1
       rainc@standard_name = "convective_precipitation_amount"
       rainc@units         = "kg m-2"
 
-    rainnc = data(:,17) 
+    rainnc = data(:,17)
       rainnc@long_name     = "Grid-Scale Cumulative Precipitation"
       rainnc@description   = "Grid-Scale Cumulative Precipitation"
       rainnc@standard_name = "stratiform_precipitation_amount"
@@ -268,7 +282,7 @@ do ss = 0, dimsizes(station_id)-1
       clw@description   = "Columnar Water Vapor"
       clw@standard_name = "atmosphere_mass_content_of_water_vapor"
       clw@units         = "kg m-2"
-      
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -289,7 +303,7 @@ do ss = 0, dimsizes(station_id)-1
       data@grid_x  = grid_x
       data@grid_y  = grid_y
 
-      
+
    u_profile = data(:,1:dimsizes(sigma))
       u_profile!1     = "sigma"
       u_profile&sigma = sigma
@@ -318,7 +332,7 @@ do ss = 0, dimsizes(station_id)-1
       data@domain  = domain
       data@grid_x  = grid_x
       data@grid_y  = grid_y
-      
+
    v_profile = data(:,1:dimsizes(sigma))
       v_profile!1     = "sigma"
       v_profile&sigma = sigma
@@ -363,7 +377,7 @@ do ss = 0, dimsizes(station_id)-1
       data@grid_x  = grid_x
       data@grid_y  = grid_y
 
-      
+
    potential_temperature_profile = data(:,1:dimsizes(sigma))
       potential_temperature_profile!1     = "sigma"
       potential_temperature_profile&sigma = sigma
@@ -390,7 +404,7 @@ do ss = 0, dimsizes(station_id)-1
       data@domain  = domain
       data@grid_x  = grid_x
       data@grid_y  = grid_y
-      
+
    specific_humidity_profile = data(:,1:dimsizes(sigma))
       specific_humidity_profile!1     = "sigma"
       specific_humidity_profile&sigma = sigma
@@ -429,7 +443,7 @@ do ss = 0, dimsizes(station_id)-1
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 if (tke_on) then
 
-  delete(data)
+   delete(data)
 
    filename = station_id(ss) + domainstring + "TE"
 
@@ -457,7 +471,70 @@ if (tke_on) then
 end if
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-          
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+if (soils_on) then
+
+   delete(data)
+
+   filename = station_id(ss) + domainstring + "SM"
+
+   data = readAsciiTable(dir_for_wrf_output + filename, (1+nlevels), "float", 1)
+      data!0       = "time"
+      data&time    =  time
+      data@lat     = latitude_wrf
+      data@lon     = longitude_wrf
+      data@lat_sta = latitude_sta
+      data@lon_sta = longitude_sta
+      data@elev    = elev
+      data@domain  = domain
+      data@grid_x  = grid_x
+      data@grid_y  = grid_y
+
+   soil_moisture_profile = data(:,1:dimsizes(soil_levels))
+      soil_moisture_profile!1     = "soil_levels"
+      soil_moisture_profile&sigma = soil_levels
+
+   soil_moisture_profile@long_name     = "Soil Water Content"
+   soil_moisture_profile@description   = "Soil Water Content"
+   soil_moisture_profile@standard_name = "soil_moisture_content"
+   soil_moisture_profile@units         = "kg m-2"
+
+
+
+      delete(data)
+
+      filename = station_id(ss) + domainstring + "ST"
+
+      data = readAsciiTable(dir_for_wrf_output + filename, (1+nlevels), "float", 1)
+         data!0       = "time"
+         data&time    =  time
+         data@lat     = latitude_wrf
+         data@lon     = longitude_wrf
+         data@lat_sta = latitude_sta
+         data@lon_sta = longitude_sta
+         data@elev    = elev
+         data@domain  = domain
+         data@grid_x  = grid_x
+         data@grid_y  = grid_y
+
+      soil_temperature_profile = data(:,1:dimsizes(soil_levels))
+         soil_temperature_profile!1     = "soil_levels"
+         soil_temperature_profile&sigma = soil_levels
+
+      soil_temperature_profile@long_name     = "Soil Temperature"
+      soil_temperature_profile@description   = "Soil Temperature"
+      soil_temperature_profile@standard_name = "soil_temperature"
+      soil_temperature_profile@units         = "K"
+
+
+
+end if
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
     wrf_file= "wrfout_d" + sprinti("%0.2i", tointeger(domain)) + "_" + \
               datestring + "_" + hourstring + "_" + station_id(ss) + ".nc"
 
@@ -472,7 +549,7 @@ end if
       nc@elev    = elev
 
       nc@domain       = domain
-    
+
     nc->time        = time
     nc->sigma       = sigma
     nc->temperature = temperature
@@ -486,22 +563,28 @@ end if
     nc->gsw         = gsw
     nc->hfx         = hfx
     nc->lfx         = lfx
-    nc->tsoil       = tsoil
-    nc->tslb        = tslb
+    nc->tskin       = tskin
+    nc->tsoil_top   = tsoil_top
     nc->rainc       = rainc
     nc->rainnc      = rainnc
     nc->clw         = clw
     nc->ptop        = ptop
-    
-    nc->u_wind_profile                           = u_profile
+
+    nc->u_wind_profile                      = u_profile
     nc->v_wind_profile                      = v_profile
     nc->wind_speed_profile                  = wind_speed_profile
     nc->wind_direction_profile              = wind_dir_profile
     nc->potential_temperature_profile       = potential_temperature_profile
     nc->specific_humidity_profile           = specific_humidity_profile
     nc->geopotential_height_profile         = geopotential_height_profile
+    
     if (tke_on) then
        nc->turbulent_kinetic_energy_profile = turbulent_kinetic_energy_profile
+    end if
+
+    if (soils_on) then
+       nc->soil_temperature_profile = soil_temperature_profile
+       nc->soil_moisture_profile    = soil_moisture_profile
     end if
 
 

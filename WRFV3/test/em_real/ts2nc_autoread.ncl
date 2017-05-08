@@ -498,10 +498,12 @@ if (soils_on) then
 
    soil_moisture_profile@long_name     = "Soil Water Content"
    soil_moisture_profile@description   = "Soil Water Content"
-   soil_moisture_profile@standard_name = "soil_moisture_content"
+   soil_moisture_profile@standard_name = "liquid_water_content_of_soil_layer"
    soil_moisture_profile@units         = "kg m-2"
 
+   soil_levels_2d = conform(soil_moisture_profile,soil_levels,1)
 
+   soil_moisture_profile(:,:) = (/ soil_moisture_profile * soil_levels_2d /)
 
       delete(data)
 
@@ -577,7 +579,7 @@ end if
     nc->potential_temperature_profile       = potential_temperature_profile
     nc->specific_humidity_profile           = specific_humidity_profile
     nc->geopotential_height_profile         = geopotential_height_profile
-    
+
     if (tke_on) then
        nc->turbulent_kinetic_energy_profile = turbulent_kinetic_energy_profile
     end if

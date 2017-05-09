@@ -18,7 +18,7 @@ begin
 
 
 
-    dir_for_wrf_output = "/projects/biomimicry/WRF_RUNS/Namibia/2016-03-05_00/ens01/"
+    dir_for_wrf_output = "/projects/biomimicry/WRF_RUNS/Namibia/2016-03-05_00/ens05/"
 
     domainstring       = ".d03."
 
@@ -49,6 +49,7 @@ begin
        delete(soil_levels@MemoryOrder)
        soil_levels!0             = "soil_levels"
        soil_levels&soil_levels   = soil_levels
+       soil_levels@positive      = "down"
        soil_levels@standard_name = "depth"
        soil_levels@long_name     = "Depths of Center of the Soil Layers"
        soil_levels@description   = "Depths of Center of the Soil Layers"
@@ -480,7 +481,7 @@ if (soils_on) then
 
    filename = station_id(ss) + domainstring + "SM"
 
-   data = readAsciiTable(dir_for_wrf_output + filename, (1+nlevels), "float", 1)
+   data = readAsciiTable(dir_for_wrf_output + filename, (1+dimsizes(soil_levels)), "float", 1)
       data!0       = "time"
       data&time    =  time
       data@lat     = latitude_wrf
@@ -493,8 +494,8 @@ if (soils_on) then
       data@grid_y  = grid_y
 
    soil_moisture_profile = data(:,1:dimsizes(soil_levels))
-      soil_moisture_profile!1     = "soil_levels"
-      soil_moisture_profile&sigma = soil_levels
+      soil_moisture_profile!1           = "soil_levels"
+      soil_moisture_profile&soil_levels = soil_levels
 
    soil_moisture_profile@long_name     = "Soil Water Content"
    soil_moisture_profile@description   = "Soil Water Content"
@@ -509,7 +510,7 @@ if (soils_on) then
 
       filename = station_id(ss) + domainstring + "ST"
 
-      data = readAsciiTable(dir_for_wrf_output + filename, (1+nlevels), "float", 1)
+      data = readAsciiTable(dir_for_wrf_output + filename, (1+dimsizes(soil_levels)), "float", 1)
          data!0       = "time"
          data&time    =  time
          data@lat     = latitude_wrf
@@ -522,8 +523,8 @@ if (soils_on) then
          data@grid_y  = grid_y
 
       soil_temperature_profile = data(:,1:dimsizes(soil_levels))
-         soil_temperature_profile!1     = "soil_levels"
-         soil_temperature_profile&sigma = soil_levels
+         soil_temperature_profile!1           = "soil_levels"
+         soil_temperature_profile&soil_levels = soil_levels
 
       soil_temperature_profile@long_name     = "Soil Temperature"
       soil_temperature_profile@description   = "Soil Temperature"
@@ -554,6 +555,7 @@ end if
 
     nc->time        = time
     nc->sigma       = sigma
+    nc->soil_levels = soil_levels
     nc->temperature = temperature
     nc->rh          = rh
     nc->dewpoint    = dewpoint

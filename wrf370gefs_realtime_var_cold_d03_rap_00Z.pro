@@ -4,8 +4,9 @@
 ;
  time_start_in_sec = systime(/seconds)
 
+   working_directory    =
    WRF_OUTSTORE         = "/projects/biomimicry/WRF_RT_OUTPUT/NAM02"
-   wrf_home_dir         = "/home/wcapehart/WRF_REALTIME_NAMIBIA_02/"
+   wrf_home_dir         = "/home/wcapehart/WRFV381_TKE/"
    wrf_version          = "WRFV371"
    wrf_program_root_dir = wrf_home_dir + wrf_version+"/"
    wrfda_obsproc_exe    = wrf_program_root_dir + "WRFDA/var/obsproc/src/obsproc.exe "
@@ -25,14 +26,14 @@
                                 START_HOUR,   $
                                 FORMAT='(I4.4,"-",I2.2,"-",I2.2,"_",I2.2)')
 
-   openw, 1, "/home/wjc/WRF_REALTIME/current_day.txt"
+   openw, 1, wrf_home_dir+ "current_day.txt"
    printf, 1, STRING(  $
                      START_YEAR, START_MONTH, START_DAY, START_HOUR, $
                      FORMAT='(I4.4,"-",I2.2,"-",I2.2,"_",I2.2)')
    close, 1
 
 
-   openw, 1, "/home/wjc/WRF_REALTIME/current_day_upp.txt"
+   openw, 1, wrf_home_dir+ "current_day_upp.txt"
    printf, 1, STRING(  $
                      START_YEAR, START_MONTH, START_DAY, START_HOUR, $
                      FORMAT='(I4.4,I2.2,I2.2,I2.2)')

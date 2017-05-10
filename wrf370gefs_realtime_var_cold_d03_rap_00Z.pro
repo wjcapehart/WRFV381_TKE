@@ -18,12 +18,28 @@
 
    START_HOUR  = 00
    END_HOUR    =  START_HOUR
-   
+
    model_run_datetime = STRING(START_YEAR,   $
                                 START_MONTH,  $
                                 START_DAY,    $
                                 START_HOUR,   $
                                 FORMAT='(I4.4,"-",I2.2,"-",I2.2,"_",I2.2)')
+
+   openw, 1, "/home/wjc/WRF_REALTIME/current_day.txt"
+   printf, 1, STRING(  $
+                     START_YEAR, START_MONTH, START_DAY, START_HOUR, $
+                     FORMAT='(I4.4,"-",I2.2,"-",I2.2,"_",I2.2)')
+   close, 1
+
+
+   openw, 1, "/home/wjc/WRF_REALTIME/current_day_upp.txt"
+   printf, 1, STRING(  $
+                     START_YEAR, START_MONTH, START_DAY, START_HOUR, $
+                     FORMAT='(I4.4,I2.2,I2.2,I2.2)')
+                 close, 1
+
+
+
 
    PNGDIR               =   "/projects/biomimicry/WRF_RT_OUTPUT_PNG/NAM02/" + model_run_datetime
 

@@ -9,7 +9,6 @@
    wrf_version          = "WRFV371"
    wrf_program_root_dir = wrf_home_dir + wrf_version+"/"
    wrfda_obsproc_exe    = wrf_program_root_dir + "WRFDA/var/obsproc/src/obsproc.exe "
-   PNGDIR               =   "/projects/biomimicry/WRF_RT_OUTPUT_PNG/NAM02/" + model_run_datetime
 
       systime_start = systime(/UTC,/JULIAN)
         systime_end = systime(/UTC,/JULIAN)+1
@@ -19,7 +18,14 @@
 
    START_HOUR  = 00
    END_HOUR    =  START_HOUR
+   
+   model_run_datetime = STRING(START_YEAR,   $
+                                START_MONTH,  $
+                                START_DAY,    $
+                                START_HOUR,   $
+                                FORMAT='(I4.4,"-",I2.2,"-",I2.2,"_",I2.2)')
 
+   PNGDIR               =   "/projects/biomimicry/WRF_RT_OUTPUT_PNG/NAM02/" + model_run_datetime
 
 
 ;if (three_daytest eq 0) then begin

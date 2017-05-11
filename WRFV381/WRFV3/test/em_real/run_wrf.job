@@ -17,4 +17,5 @@ date -u
 mpirun  -np 256 ./wrf.exe
 echo End WRF Run
 date -u
+date -u > /home/wcapehart/WRFV381_TKE/WRFV381/WRFV3/test/em_real/my_wrf_is_done.txt
 exit 0

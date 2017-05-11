@@ -19,4 +19,7 @@ date -u
 mpirun  -np 64 ./real.exe
 echo End WRF Run
 date -u
+date -u > /home/wcapehart/WRFV381_TKE/WRFV381/WRFV3/test/em_real/my_real_is_done.txt
+
+
 exit 0

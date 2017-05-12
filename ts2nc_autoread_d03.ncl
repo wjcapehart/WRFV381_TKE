@@ -27,7 +27,7 @@ begin
 
     domainstring       = ".d03."
 
-    wrf_full_model_file =  "nam02_d03_"+run_date+"_F00.nc"
+    wrf_full_model_file =  "nam02_d03_"+run_date+".nc"
 
     print(wrf_full_model_file)
 
@@ -545,7 +545,7 @@ end if
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-    wrf_file= "wrfout_d" + sprinti("%0.2i", tointeger(domain)) + "_" + \
+    wrf_file= "nam02_d" + sprinti("%0.2i", tointeger(domain)) + "_" + \
               datestring + "_" + hourstring + "_" + station_id(ss) + ".nc"
 
     system("rm -frv "+dir_for_wrf_output + wrf_file)

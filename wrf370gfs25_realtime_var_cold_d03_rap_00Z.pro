@@ -454,7 +454,7 @@
          ;
          ;;;  nudgeprep
 	      print, "pulling nudging data"
-         nudge_data_dir = "/data/NCAR/UNIDATA_LITTLE_R/"
+         nudge_data_dir = "/data/NCAR/UNIDATA_LITTLE_R_NAMIBIA/"
 
          help, NUDGING_PERIOD+1
          help, START_JULIAN
@@ -662,9 +662,11 @@
 
            spawn, 'rm -frv my_wrf_is_done.txt'
 
+          WRF_FILENAMES    = "wrfout_d01_" +  SUBOUT_DATE_STRING
+          WRF_SM_FILENAMES = "wrfout_d01_" +  SUBOUT_DATE_STRING_SM + ".nc"
 
 
-       SPAWN, "echo Nudging Disabled > /home/wjc/WRF_REALTIME/nudge.status.txt"
+       SPAWN, "echo Nudging Disabled > /home/wcapehart/WRFV381_TKE/nudge.status.txt"
 
 
               IF ( FILE_TEST( WRF_FILENAMES(0)) EQ 0) THEN BEGIN

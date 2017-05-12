@@ -23,8 +23,8 @@ smooth_option            = 0,
 max_ts_locs              = 10,
 /
 
-nproc_x = 8,
-nproc_y = 8,
+nproc_x = 16,
+nproc_y = 16,
 
 
 

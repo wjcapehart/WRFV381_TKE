@@ -78,7 +78,7 @@
 
 
 
-   max_domains = 1L
+   max_domains = 3L
 
    WHERE_IS_MY_RESTART_TIME =  6L ;(first timestep = 0)
 
@@ -94,7 +94,7 @@
    WRFOUT_DT3     = 01L ; HOURS (timestep for WRF Output Data)
    NUDGING_PERIOD = 03L ; hOURS
 
-   SHORTRUN_DT =   02L ; HOURS (numbers of hours for a single WRF run)
+   SHORTRUN_DT =   36L ; HOURS (numbers of hours for a single WRF run)
    WRF_RUN_INTERVAL = 24L ; HOURS (numbers of hours  between WRF run)
 
 
@@ -403,7 +403,7 @@
              PRINTF, 1, " max_dom    = " + string(max_domains, FORMAT="(I4)") + ","
              PRINTF, 1, " start_date =  '" + SHORTRUN_DATE_STRING_A(T) + ":00:00','"+ SHORTRUN_DATE_STRING_A(T) + ":00:00','"+ SHORTRUN_DATE_STRING_A(T) + ":00:00',"
              PRINTF, 1, " end_date   =  '" + SHORTRUN_DATE_STRING_B(T) + ":00:00','"+ SHORTRUN_DATE_STRING_A(T) + ":00:00','"+ SHORTRUN_DATE_STRING_A(T) + ":00:00',"
-             PRINTF, 1, " interval_seconds =  " + string(3 * 3600L, FORMAT='(I5.5)') + ","
+             PRINTF, 1, " interval_seconds =  " + string(1 * 3600L, FORMAT='(I5.5)') + ","
              PRINTF, 1, " io_form_geogrid = 2,"
              PRINTF, 1, " opt_output_from_geogrid_path = '"+WPS_WORKAREA+"',"
              PRINTF, 1, " debug_level = 0,"

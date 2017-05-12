@@ -31,8 +31,8 @@
 &metgrid
  fg_name = 'FILE',
  io_form_metgrid = 2,
- opt_output_from_metgrid_path = '/projects/biomimicry/ABM_Class/Namibia/',
- opt_metgrid_tbl_path = '/projects/biomimicry/ABM_Class/Namibia/',
+ opt_output_from_metgrid_path = './',
+ opt_metgrid_tbl_path = './',
 /
 
 &mod_levs

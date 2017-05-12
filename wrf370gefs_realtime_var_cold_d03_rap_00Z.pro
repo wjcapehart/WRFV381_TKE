@@ -4,10 +4,9 @@
 ;
  time_start_in_sec = systime(/seconds)
 
-   working_directory    =
    WRF_OUTSTORE         = "/projects/biomimicry/WRF_RT_OUTPUT/NAM02"
    wrf_home_dir         = "/home/wcapehart/WRFV381_TKE/"
-   wrf_version          = "WRFV371"
+   wrf_version          = "WRFV381"
    wrf_program_root_dir = wrf_home_dir + wrf_version+"/"
    wrfda_obsproc_exe    = wrf_program_root_dir + "WRFDA/var/obsproc/src/obsproc.exe "
 
@@ -91,12 +90,12 @@
    WRFVERSION     = 3L   ;       (version of WRF)
 
    GRIB_DT        = 01L ; HOURS (timestep for WRF Input Data)
-   WRFOUT_DT      = 03L ; HOURS (timestep for WRF Output Data)
-   WRFOUT_DT3     = 03L ; HOURS (timestep for WRF Output Data)
+   WRFOUT_DT      = 01L ; HOURS (timestep for WRF Output Data)
+   WRFOUT_DT3     = 01L ; HOURS (timestep for WRF Output Data)
    NUDGING_PERIOD = 03L ; hOURS
 
-   SHORTRUN_DT =   48L ; HOURS (numbers of hours for a single WRF run)
-   WRF_RUN_INTERVAL = 6L ; HOURS (numbers of hours  between WRF run)
+   SHORTRUN_DT =   02L ; HOURS (numbers of hours for a single WRF run)
+   WRF_RUN_INTERVAL = 24L ; HOURS (numbers of hours  between WRF run)
 
 
    ;
@@ -362,7 +361,7 @@
            website = "ftp://ftpprd.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs." + $
                       ncdc_dir1 + "/" + ncdc_dir2 + "/pgrb2/"
            website = "http://nomads.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/gfs." + $
-                     ncdc_dir1 + "/" + ncdc_dir2 + "/pgrb2/"
+                     ncdc_dir1 + ncdc_dir2 + "/"
            ;;;     gfs.t00z.pgrb2.0p25.f000
            pref = "gfs."
 
@@ -372,12 +371,12 @@
                fx(TT) = TT*GRIB_DT
 
            FOR TT = 0L, NT_UNGRIB-1L DO $
-                GRIB_FILE_MSS(TT) = website+ "/" + pref+string(HOUR_UNGRIB(0),fx(TT),format="('.t',I2.2,'z.pgrb2.0p25.f',I3.3)")
+                GRIB_FILE_MSS(TT) = website+ "/" + pref+string(HOUR_UNGRIB(0),fx(TT),format="('t',I2.2,'z.pgrb2.0p25.f',I3.3)")
 
            FOR TT = 0L, NT_UNGRIB-1L DO $
-                GRIB_FILE_LOCAL(TT) =  pref+string(HOUR_UNGRIB(0),fx(TT),format="('.t',I2.2,'z.pgrb2.0p25.f',I3.3)")
-
-
+                GRIB_FILE_LOCAL(TT) =  pref+string(HOUR_UNGRIB(0),fx(TT),format="('t',I2.2,'z.pgrb2.0p25.f',I3.3)")
+; http://nomads.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/gfs.2017051000//gfs..t00z.pgrb2.0p25.f008
+; http://nomads.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/gfs.2017051000/gfs.t00z.pgrb2.0p25.f008
            print, GRIB_FILE_MSS
            print, GRIB_FILE_LOCAL
 

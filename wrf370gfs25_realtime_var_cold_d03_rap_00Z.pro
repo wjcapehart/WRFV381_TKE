@@ -1,4 +1,3 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
 ;   USER MODIFICATION
 ;
@@ -78,7 +77,7 @@
 
 
 
-   max_domains = 3L
+   max_domains = 2L
 
    WHERE_IS_MY_RESTART_TIME =  6L ;(first timestep = 0)
 
@@ -140,7 +139,6 @@
            START_YEAR, START_MONTH, START_DAY, START_HOUR, $
            FORMAT='("/",I4.4,"-",I2.2,"-",I2.2,"_",I2.2,"/")')
 
-   SPAWN, "ssh wjc@kyrill.ias.sdsmt.edu 'mkdir -v "   + WRF_OUTSTORE + " '"
 
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -321,7 +319,7 @@
                                                 DAY_SUBOUT(0),    $
                                                 HOUR_SUBOUT(0),   $
                                                 TT*WRFOUT_DT,      $
-                                                FORMAT='(I4.4,"-",I2.2,"-",I2.2,"_",I2.2,"_F",I2.2)')
+                                                FORMAT='(I4.4,"-",I2.2,"-",I2.2,"_",I2.2)')
 
           CALDAT, JULAIN_DATES_UNGRIB, MONTH_UNGRIB, DAY_UNGRIB, YEAR_UNGRIB, HOUR_UNGRIB
 
@@ -682,27 +680,31 @@
           WRF_SM_FILENAMES = "nam02_d01_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
           FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
               SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' '
+
+
           WRF_FILENAMES    = "wrfout_d02_" +  SUBOUT_DATE_STRING(0)
           WRF_SM_FILENAMES =  "nam02_d02_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
           FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
               SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' '
-          WRF_FILENAMES    = "wrfout_d03_" +  SUBOUT_DATE_STRING(0)
-          WRF_SM_FILENAMES =  "nam02_d03_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
-          FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
-              SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' '
+
+
+;          WRF_FILENAMES    = "wrfout_d03_" +  SUBOUT_DATE_STRING(0)
+;          WRF_SM_FILENAMES =  "nam02_d03_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
+;          FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
+;              SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' '
 
           FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
               SPAWN, 'rm -v ' + WRF_FILENAMES(TT)
 
 
-          SPAWN, "ncl "+wrf_home_dir+"ts2nc_autoread.ncl"
-
-          WRF_FILENAMES = WRF_FILENAMES  + '.nc '
+          SPAWN, "ncl "+wrf_home_dir+"ts2nc_autoread_d01.ncl"
+          SPAWN, "ncl "+wrf_home_dir+"ts2nc_autoread_d02.ncl"
 
           ; SPAWN, 'gzip -frv9 wrfout*.nc '
 
-          SPAWN, 'scp -v ./nam*.nc   wjc@kyrill.ias.sdsmt.edu:' + WRF_OUTSTORE
+          SPAWN, "ssh wjc@kyrill.ias.sdsmt.edu 'mkdir -v "   + WRF_OUTSTORE + " '"
 
+          SPAWN, 'scp -v ./nam*.nc   wjc@kyrill.ias.sdsmt.edu:' + WRF_OUTSTORE
 
           SPAWN, 'rm -frv rsl* wrfout*.nc* wrfrst_d0* nam*nc'
 
@@ -715,7 +717,6 @@
 
 
 ;endif else begin
-    print, three_daytest, " This is not the thrid day"
 ;endelse
 
 

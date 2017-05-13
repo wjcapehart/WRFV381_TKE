@@ -512,8 +512,8 @@
                 PRINTF, 1, " start_month           = " + STRING(MONTH_SHORTRUN_A(T), FORMAT='(I2.2)') + "," + STRING(MONTH_SHORTRUN_A(T), FORMAT='(I2.2)') + ","+  STRING(MONTH_SHORTRUN_A(T), FORMAT='(I2.2)') + ","
                 PRINTF, 1, " start_day             = " + STRING(DAY_SHORTRUN_A(T),   FORMAT='(I2.2)') + "," + STRING(DAY_SHORTRUN_A(T),   FORMAT='(I2.2)') + "," + STRING(DAY_SHORTRUN_A(T),   FORMAT='(I2.2)') + ","
                 PRINTF, 1, " start_hour            = " + STRING(HOUR_SHORTRUN_A(T),  FORMAT='(I2.2)') + "," + STRING(HOUR_SHORTRUN_A(T),  FORMAT='(I2.2)') + "," + STRING(HOUR_SHORTRUN_A(T),  FORMAT='(I2.2)') + ","
-                PRINTF, 1, " start_minute          = 00,00,"
-                PRINTF, 1, " start_second          = 00,00,"
+                PRINTF, 1, " start_minute          = 00,00,00,"
+                PRINTF, 1, " start_second          = 00,00,00,"
                 PRINTF, 1, " end_year              = " + STRING(YEAR_SHORTRUN_B(T),  FORMAT='(I4.4)') + "," + STRING(YEAR_SHORTRUN_B(T),  FORMAT='(I4.4)') + "," + STRING(YEAR_SHORTRUN_B(T),  FORMAT='(I4.4)') + ","
                 PRINTF, 1, " end_month             = " + STRING(MONTH_SHORTRUN_B(T), FORMAT='(I2.2)') + "," + STRING(MONTH_SHORTRUN_B(T), FORMAT='(I2.2)') + "," + STRING(MONTH_SHORTRUN_B(T), FORMAT='(I2.2)') + ","
                 PRINTF, 1, " end_day               = " + STRING(DAY_SHORTRUN_B(T),   FORMAT='(I2.2)') + "," + STRING(DAY_SHORTRUN_B(T),   FORMAT='(I2.2)') + "," + STRING(DAY_SHORTRUN_B(T),   FORMAT='(I2.2)') + ","
@@ -549,14 +549,14 @@
                 PRINTF, 1, " start_month        = " + STRING(MONTH_SHORTRUN_A(T), FORMAT='(I2.2)') + "," + STRING(MONTH_SHORTRUN_A(T), FORMAT='(I2.2)') + ","+  STRING(MONTH_SHORTRUN_A(T), FORMAT='(I2.2)') + ","
                 PRINTF, 1, " start_day          = " + STRING(DAY_SHORTRUN_A(T),   FORMAT='(I2.2)') + "," + STRING(DAY_SHORTRUN_A(T),   FORMAT='(I2.2)') + "," + STRING(DAY_SHORTRUN_A(T),   FORMAT='(I2.2)') + ","
                 PRINTF, 1, " start_hour         = " + STRING(HOUR_SHORTRUN_A(T),  FORMAT='(I2.2)') + "," + STRING(HOUR_SHORTRUN_A(T),  FORMAT='(I2.2)') + "," + STRING(HOUR_SHORTRUN_A(T),  FORMAT='(I2.2)') + ","
-                PRINTF, 1, " start_minute       = 00,00,"
-                PRINTF, 1, " start_second       = 00,00,"
+                PRINTF, 1, " start_minute       = 00,00,00,"
+                PRINTF, 1, " start_second       = 00,00,00,"
                 PRINTF, 1, " end_year           = " + STRING(YEAR_SHORTRUN_B(T),  FORMAT='(I4.4)') + "," + STRING(YEAR_SHORTRUN_B(T),  FORMAT='(I4.4)') + "," + STRING(YEAR_SHORTRUN_B(T),  FORMAT='(I4.4)') + ","
                 PRINTF, 1, " end_month          = " + STRING(MONTH_SHORTRUN_B(T), FORMAT='(I2.2)') + "," + STRING(MONTH_SHORTRUN_B(T), FORMAT='(I2.2)') + "," + STRING(MONTH_SHORTRUN_B(T), FORMAT='(I2.2)') + ","
                 PRINTF, 1, " end_day            = " + STRING(DAY_SHORTRUN_B(T),   FORMAT='(I2.2)') + "," + STRING(DAY_SHORTRUN_B(T),   FORMAT='(I2.2)') + "," + STRING(DAY_SHORTRUN_B(T),   FORMAT='(I2.2)') + ","
                 PRINTF, 1, " end_hour           = " + STRING(HOUR_SHORTRUN_B(T),  FORMAT='(I2.2)') + "," + STRING(HOUR_SHORTRUN_B(T),  FORMAT='(I2.2)') + "," + STRING(HOUR_SHORTRUN_B(T),  FORMAT='(I2.2)') + ","
-                PRINTF, 1, " end_minute         = 00,00,"
-                PRINTF, 1, " end_second         = 00,00,"
+                PRINTF, 1, " end_minute         = 00,00,00"
+                PRINTF, 1, " end_second         = 00,00,00,"
                 PRINTF, 1, " interval_seconds   = " + STRING(GRIB_DT*3600L,    FORMAT='(I5.5)') + ","
                 PRINTF, 1, " input_from_file    = .true., .true., .true.,"
                 PRINTF, 1, " io_form_auxinput2  = 2,"
@@ -734,7 +734,6 @@
                                START_HOUR,   $
                                FORMAT='(I4.4,"-",I2.2,"-",I2.2,"_",I2.2)')
 
-   PNGDIR =   "/projects/WRF_REALTIME/OUTPUT_PNG/" + model_run_datetime
 
 
    for domaincodeindex = 1, 2 do begin

@@ -588,13 +588,11 @@
                             + WRF_WORKAREA + 'namelist.input '
 
          SPAWN, 'rm -fr ./rsl.*'
-                    SPAWN, ' cp namelist.input.wrf namelist.input'
+         SPAWN, ' cp namelist.input.wrf namelist.input'
 
          PRINT, '--- RUNNING REAL.EXE ' + SHORTRUN_DATE_STRING_A(T)
-         ;     SPAWN, "ls -alt met_em.*.nc"
          spawn, "scp ./namelist.input "+ CO_NODE + ":"+WRF_WORKAREA+"/"
          print, 'time nohup ' + WRF_REAL_CMD
-         SPAWN, 'time nohup ' + WRF_REAL_CMD
 
          IF ( FILE_TEST("./wrfinput_d01") EQ 0) THEN BEGIN
              PRINT, "REAL FAILED"
@@ -618,12 +616,6 @@
          time_start_in_sec_wrf = systime(/seconds)
 
           PRINT, '--- RUNNING WRF.EXE WITH NUDGING' + SHORTRUN_DATE_STRING_A(T)
-                    SPAWN, ' cp namelist.input.wrf namelist.input'
-                    spawn, "scp ./wrfbdy_d01 "     + CO_NODE + ":" + WRF_WORKAREA+"/"
-                    spawn, "scp ./wrfinput_d01 "   + CO_NODE + ":" + WRF_WORKAREA+"/"
-                    spawn, "scp ./wrfinput_d02 "   + CO_NODE + ":" + WRF_WORKAREA+"/"
-                    spawn, "scp ./namelist.input " + CO_NODE + ":" + WRF_WORKAREA+"/"
-                    print, 'time  ' + WRF_WRF_CMD
           SPAWN, 'time  ' + WRF_WRF_CMD
 
           ;; check if there was an error

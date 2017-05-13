@@ -623,8 +623,7 @@
          SPAWN, 'rm -frv ' + WRF_WORKAREA + 'met_em*.nc'
          SPAWN, 'rm -frv ' + WPS_WORKAREA + 'met_em*.nc'
 
-         PRINT, '--- RUNNING REAL.EXE ' + SHORTRUN_DATE_STRING_A(T)
-         SPAWN, 'time ' + WRF_REAL_CMD
+
 
 
 

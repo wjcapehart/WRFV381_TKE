@@ -686,7 +686,6 @@
           FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
               SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' ' + WRF_SM_FILENAMES(TT)
 
-
 ;          WRF_FILENAMES    = "wrfout_d03_" +  SUBOUT_DATE_STRING(0)
 ;          WRF_SM_FILENAMES =  "nam02_d03_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
 ;          FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $

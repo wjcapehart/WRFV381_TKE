@@ -9,6 +9,18 @@
    wrf_program_root_dir = wrf_home_dir + wrf_version+"/"
    wrfda_obsproc_exe    = wrf_program_root_dir + "WRFDA/var/obsproc/src/obsproc.exe "
 
+   WRFVERSION     = 3L   ;       (version of WRF)
+
+   GRIB_DT        = 01L ; HOURS (timestep for WRF Input Data)
+   WRFOUT_DT      = 01L ; HOURS (timestep for WRF Output Data)
+   WRFOUT_DT3     = 01L ; HOURS (timestep for WRF Output Data)
+   NUDGING_PERIOD = 03L ; hOURS
+
+   SHORTRUN_DT =   36L ; HOURS (numbers of hours for a single WRF run)
+   WRF_RUN_INTERVAL = 24L ; HOURS (numbers of hours  between WRF run)
+
+
+
       systime_start = systime(/UTC,/JULIAN)
         systime_end = systime(/UTC,/JULIAN)+1
 
@@ -85,17 +97,6 @@
    N_VARWIN = WINDOW_3DVAR * 2 + 1
 
   N_VARWIN = 4
-
-   WRFVERSION     = 3L   ;       (version of WRF)
-
-   GRIB_DT        = 01L ; HOURS (timestep for WRF Input Data)
-   WRFOUT_DT      = 01L ; HOURS (timestep for WRF Output Data)
-   WRFOUT_DT3     = 01L ; HOURS (timestep for WRF Output Data)
-   NUDGING_PERIOD = 03L ; hOURS
-
-   SHORTRUN_DT =   36L ; HOURS (numbers of hours for a single WRF run)
-   WRF_RUN_INTERVAL = 24L ; HOURS (numbers of hours  between WRF run)
-
 
    ;
    ; Destination of climate files
@@ -259,7 +260,6 @@
           SPAWN, 'rm -frv ' + WPS_WORKAREA + 'PFILE:*'
           SPAWN, 'rm -frv ' + WRF_WORKAREA + '????.d0?.??'
 
-          SPAWN, 'rm -frv ' + WPS_WORKAREA + 'met_em*.nc'
           SPAWN, 'rm -frv ' + WPS_WORKAREA + 'GRIBFILE*'
           SPAWN, 'rm -frv ' + WRF_WORKAREA + 'sfc_obs*
           SPAWN, 'rm -frv ' + WRF_WORKAREA + 'obs*'
@@ -268,6 +268,7 @@
           SPAWN, 'rm -frv ' + WRF_WORKAREA + 'nam*nc'
           SPAWN, 'rm -frv ' + WRF_WORKAREA + 'OBS*'
           SPAWN, 'rm -frv ' + WRF_WORKAREA + 'met_em*.nc'
+          SPAWN, 'rm -frv ' + WPS_WORKAREA + 'met_em*.nc'
           SPAWN, 'rm -frv ' + WPS_WORKAREA + 'nam*.grib2'
 
           SPAWN, 'rm -frv ' + WPS_WORKAREA + 'gefs*.g*2'
@@ -447,6 +448,10 @@
           SPAWN, 'rm -fvr '+ WRF_WORKAREA + '/rsl.*'
 
           SPAWN, 'rm -fvr '+ WRF_WORKAREA + '/OBS_DOMAIN*'
+          SPAWN, 'rm -frv ' + WPS_WORKAREA + 'g*z.pgrb2.0p25.f*'
+          SPAWN, 'rm -frv ' + WPS_WORKAREA + 'FILE:*'
+          SPAWN, 'rm -frv ' + WPS_WORKAREA + 'FILE218:*'
+          SPAWN, 'rm -frv ' + WPS_WORKAREA + 'PFILE:*'
 
          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
          ;
@@ -604,14 +609,21 @@
                             + WRF_WORKAREA + 'namelist.input '
 
          SPAWN, 'rm -fr ./rsl.*'
-                    SPAWN, ' cp namelist.input.wrf namelist.input'
+         SPAWN, ' cp namelist.input.wrf namelist.input'
 
          spawn, 'rm -frv my_real_is_done.txt'
 
 
+
          PRINT, '--- RUNNING REAL.EXE ' + SHORTRUN_DATE_STRING_A(T)
-         ;     SPAWN, "ls -alt met_em.*.nc"
          print, 'time  ' + WRF_REAL_CMD
+
+         SPAWN, 'ls -al wrfinput_d0* wrfbdy_d01'
+
+         SPAWN, 'rm -frv ' + WRF_WORKAREA + 'met_em*.nc'
+         SPAWN, 'rm -frv ' + WPS_WORKAREA + 'met_em*.nc'
+
+         PRINT, '--- RUNNING REAL.EXE ' + SHORTRUN_DATE_STRING_A(T)
          SPAWN, 'time ' + WRF_REAL_CMD
 
 

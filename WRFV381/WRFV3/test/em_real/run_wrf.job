@@ -1,21 +1,40 @@
 #!/bin/bash
 #PBS -S /bin/bash
 #PBS -N run_wrf_namibia
-#PBS -l nodes=4:ppn=64
+#PBS -l nodes=2:ppn=64
 #PBS -m abe
 #PBS -M William.Capehart@sdsmt.edu
 
+source ~/bin/loadpackage.sh openmpi 
 
 cd /home/wcapehart/WRFV381_TKE/WRFV381/WRFV3/test/em_real
 export OMP_NUM_THREADS=64
+
+
+
+echo
+echo =======================================================
+echo
+echo WRF Began at `date -u`
+echo
+echo =======================================================
+echo
 
 echo Begin WRF Run
 rm -frv ./nodeinuse.txt ./wrf.log ./wrfout*  ./wrfrst*  ./rsl* ./K???.d?.??
 uname -a
 uname -a >& ./nodeinuse.txt
 date -u
-mpirun  -np 256 ./wrf.exe
+nohup mpirun  -np 128 ./wrf.exe
 echo End WRF Run
 date -u
 date -u > /home/wcapehart/WRFV381_TKE/WRFV381/WRFV3/test/em_real/my_wrf_is_done.txt
+
+echo
+echo =======================================================
+echo
+echo WRF Completed at `date -u`
+echo
+echo =======================================================
+
 exit 0

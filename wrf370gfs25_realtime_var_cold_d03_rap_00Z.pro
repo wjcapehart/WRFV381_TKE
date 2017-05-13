@@ -16,7 +16,7 @@
    WRFOUT_DT3     = 01L ; HOURS (timestep for WRF Output Data)
    NUDGING_PERIOD = 03L ; hOURS
 
-   SHORTRUN_DT =   36L ; HOURS (numbers of hours for a single WRF run)
+  SHORTRUN_DT =   26L ; HOURS (numbers of hours for a single WRF run)
    WRF_RUN_INTERVAL = 24L ; HOURS (numbers of hours  between WRF run)
 
 
@@ -495,11 +495,6 @@
          FOR TT = 0L, NUDGING_PERIOD+1-1 DO $
              SPAWN, "scp wjc@kyrill.ias.sdsmt.edu:" + nudge_data_dir + "obs_" + NUDGE_OBS_DATE_STRINGS(TT) + ".txt.gz  ."
 
-         print, "Getting raws data"
-         FOR TT = 0L, N_VARWIN-1 DO begin
-	         print,  "cp -v " + nudge_data_dir + "obs_" + VAR_OBS_DATE_STRINGS(TT) + '*.txt.gz  .'
-             SPAWN, "cp -v " + nudge_data_dir + "obs_" + VAR_OBS_DATE_STRINGS(TT) + '*.txt.gz  .'
-         endfor
 
          SPAWN, "gunzip -v  obs_*.gz"
 
@@ -614,17 +609,11 @@
          spawn, 'rm -frv my_real_is_done.txt'
 
 
+         SPAWN, 'ls -al ' + WRF_WORKAREA + 'met_em*.nc'
 
          PRINT, '--- RUNNING REAL.EXE ' + SHORTRUN_DATE_STRING_A(T)
          print, 'time  ' + WRF_REAL_CMD
-
-         SPAWN, 'ls -al wrfinput_d0* wrfbdy_d01'
-
-         SPAWN, 'rm -frv ' + WRF_WORKAREA + 'met_em*.nc'
-         SPAWN, 'rm -frv ' + WPS_WORKAREA + 'met_em*.nc'
-
-
-
+         spawn, 'nohup time  '+WRF_REAL_CMD
 
 
 
@@ -633,9 +622,11 @@
                  WAIT, 60.
                  spawn, "date -u"
            endwhile
+         SPAWN, 'ls -al wrfinput_d0* wrfbdy_d01'
+        SPAWN, 'rm -frv ' + WRF_WORKAREA + 'met_em*.nc'
+         SPAWN, 'rm -frv ' + WPS_WORKAREA + 'met_em*.nc'
 
 
-         spawn, 'rm -frv my_real_is_done.txt'
 
 
          IF ( FILE_TEST("./wrfinput_d01") EQ 0) THEN BEGIN

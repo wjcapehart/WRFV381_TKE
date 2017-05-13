@@ -1,6 +1,6 @@
 
 &domains                 
-time_step                = 45,
+time_step                = 50,
 time_step_fract_num      = 0,
 time_step_fract_den      = 1,
 max_dom                  = 2,
@@ -12,8 +12,8 @@ num_metgrid_levels       = 32,
 num_metgrid_soil_levels  = 4,
 dx                       = 9000,     3000,  1000,
 dy                       = 9000,     3000,  1000,
-grid_id                  = 1,        3,  0,
-parent_id                = 1,        2,  0,
+grid_id                  = 1,        2,  0,
+parent_id                = 1,        1,  0,
 i_parent_start           = 1,       42,  0,
 j_parent_start           = 1,       86,  0,
 parent_grid_ratio        = 1,        3,  0,
@@ -22,17 +22,16 @@ feedback                 = 1,
 smooth_option            = 0,
 max_ts_locs              = 10,
 nproc_x = 16,
-nproc_y = 16,
-
+nproc_y = 8,
 /
 
 
 
 
 &physics                 
-mp_physics               = 8,        8,        8,
-ra_lw_physics            = 4,        4,        4,
-ra_sw_physics            = 4,        4,        4,
+mp_physics               = 6,        6,        6,
+ra_lw_physics            = 1,        1,        1,
+ra_sw_physics            = 1,        1,        1,
 radt                     = 0,        0,        0,
 sf_sfclay_physics        = 2,        2,        2,
 sf_surface_physics       = 2,        2,        2,
@@ -61,6 +60,29 @@ icloud_bl                = 0,
 /
 
 &fdda                    
+obs_nudge_opt = 1,1,0,0,0
+max_obs = 150000,
+fdda_start = 0., 0., 0., 0., 0.
+fdda_end = 180., 100., 99999., 99999., 99999.
+obs_nudge_wind = 1,1,1,1,1
+obs_coef_wind = 6.E-4,6.E-4,6.E-4,6.E-4,6.E-4
+obs_nudge_temp = 1,1,1,1,1
+obs_coef_temp = 6.E-4,6.E-4,6.E-4,6.E-4,6.E-4
+obs_nudge_mois = 1,1,1,1,1
+obs_coef_mois = 6.E-4,6.E-4,6.E-4,6.E-4,6.E-4
+obs_rinxy = 240.,240.,180.,180,180
+obs_rinsig = 0.1,
+obs_twindo = 0.6666667,0.6666667,0.6666667,0.6666667,0.6666667,
+obs_npfi = 10,
+obs_ionf = 2, 2, 2, 2, 2,
+obs_idynin = 0,
+obs_dtramp = 40.,
+obs_prt_freq = 10, 10, 10, 10, 10,
+obs_prt_max = 10
+obs_ipf_errob = .true.
+obs_ipf_nudob = .true.
+obs_ipf_in4dob = .true.
+obs_ipf_init = .true.
 /
 
 &dynamics                

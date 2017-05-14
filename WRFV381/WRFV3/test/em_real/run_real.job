@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -S /bin/bash
 #PBS -N run_real_namibia
-#PBS -l nodes=2:ppn=64
+#PBS -l nodes=1:ppn=64
 #PBS -m abe
 #PBS -M William.Capehart@sdsmt.edu
 source ~/bin/loadpackage.sh openmpi 
@@ -26,7 +26,7 @@ rm -frv  ./rsl* ./K???.d?.??
 uname -a
 uname -a >& ./nodeinuse.txt
 date -u
-nohup mpirun  -np 128 ./real.exe
+nohup mpirun  -np 64 ./real.exe
 echo End REAL Run
 date -u
 date -u > /home/wcapehart/WRFV381_TKE/WRFV381/WRFV3/test/em_real/my_real_is_done.txt

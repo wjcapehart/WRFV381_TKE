@@ -24,8 +24,8 @@
       systime_start = systime(/UTC,/JULIAN)
         systime_end = systime(/UTC,/JULIAN)+1
 
-   CALDAT, systime(/JULIAN),  START_MONTH, START_DAY, START_YEAR
-   CALDAT, systime(/JULIAN)+1, END_MONTH, END_DAY, END_YEAR
+   CALDAT, systime_start,  START_MONTH, START_DAY, START_YEAR
+   CALDAT, suystime_end,   END_MONTH,   END_DAY,   END_YEAR
 
    START_HOUR  = 00
    END_HOUR    =  START_HOUR

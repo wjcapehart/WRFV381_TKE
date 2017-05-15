@@ -383,7 +383,7 @@
 
 
            FOR TT = 0L, NT_UNGRIB-1L DO $
-              spawn, "wget "+GRIB_FILE_MSS(TT)
+              spawn, "nohup wget "+GRIB_FILE_MSS(TT)
 
            FOR TT = 0L, NT_UNGRIB-1L DO $
               SPAWN, 'ls -al ' + GRIB_FILE_LOCAL(TT)

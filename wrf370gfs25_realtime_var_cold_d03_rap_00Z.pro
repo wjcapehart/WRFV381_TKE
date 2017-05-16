@@ -16,7 +16,7 @@
    WRFOUT_DT3     = 01L ; HOURS (timestep for WRF Output Data)
    NUDGING_PERIOD = 03L ; hOURS
 
-  SHORTRUN_DT =   26L ; HOURS (numbers of hours for a single WRF run)
+  SHORTRUN_DT =   36L ; HOURS (numbers of hours for a single WRF run)
    WRF_RUN_INTERVAL = 24L ; HOURS (numbers of hours  between WRF run)
 
 

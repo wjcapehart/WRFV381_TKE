@@ -130,15 +130,50 @@ do ss = 0, dimsizes(station_id)-1
    station_name2 = str_get_cols(headerstring, 0,26)
    station_name  = str_left_strip(str_right_strip(station_name2(0)))
 
+   station_name!0           = "ncl_scalar"
+   station_name@long_name   = "station name"
+   station_name@description = "station name"
+   station_name@cf_role     = "timeseries_id"
+
    latitude_wrf     = stringtofloat(str_get_cols(headerstring, 70, 76))
    longitude_wrf    = stringtofloat(str_get_cols(headerstring, 78, 85))
+
+   latitude_wrf!0 = "ncl_scalar"
+   longitude_wrf!0 = "ncl_scalar"
+
+   latitude_wrf@long_name     = "latitude"
+   latitude_wrf@description   = "latitude"
+   latitude_wrf@standard_name = "latitude"
+   latitude_wrf@comment       = "relative to wrf grid"
+   latitude_wrf@units         = "degrees_north"
+   latitude_wrf@axis          = "Y"
+
+   longitude_wrf@long_name     = "longitude"
+   longitude_wrf@description   = "longitude"
+   longitude_wrf@standard_name = "longitude"
+   latitude_wrf@comment        = "relative to wrf grid"
+   longitude_wrf@units         = "degrees_east"
+   longitude_wrf@axis          = "X"
+
 
    latitude_sta     = stringtofloat(str_get_cols(headerstring, 39, 45))
    longitude_sta    = stringtofloat(str_get_cols(headerstring, 47, 54))
 
+
+   latitude_sta!0 = "ncl_scalar"
+   longitude_sta!0 = "ncl_scalar"
+
    gettheparents = str_split(headerstring,")")
    elev   = stringtofloat(str_split(gettheparents(3)," meters"))
 
+   elev!0 = "ncl_scalar"
+   elev@description   = "surface elevation"
+   elev@long_name     = "surface elevation"
+   elev@standard_name = "height"
+   elev@comment        = "relative to wrf grid"
+   elev@units         = "m"
+   elev@positive      = "up"
+   elev@axis          = "Z"
    data = readAsciiTable(dir_for_wrf_output + filename, ncol, "float", 1)
 
 
@@ -152,7 +187,6 @@ do ss = 0, dimsizes(station_id)-1
       time@units         = "hours since "+ datestring + " "+  hourstring + ":00:00"
       time!0             = "time"
       time&time          = time
-
    print("maxtime = "+max(time))
 
 
@@ -186,12 +220,14 @@ do ss = 0, dimsizes(station_id)-1
       temperature@description   = "2-m Air Temperature"
       temperature@standard_name = "air_temperature"
       temperature@units         = "K"
+      temperature@coordinates   = "time lat lon alt" ;
 
    q = data(:,6)
       q@long_name     = "2-m Vapor Mixing Ratio"
       q@description   = "2-m Vapor Mixing Ratio"
       q@standard_name = "specific_humidity"
       q@units         = "kg kg-1"
+      q@coordinates   = "time lat lon alt" ;
 
    w = q / (1-q)
 
@@ -200,18 +236,21 @@ do ss = 0, dimsizes(station_id)-1
       u@description   = "10-m Eastward Wind"
       u@standard_name = "eastward_wind"
       u@units         = "m s-1"
+      u@coordinates   = "time lat lon alt" ;
 
    v = data(:,8)
       v@long_name     = "10-m Northward Wind"
       v@description   = "10-m Northward Wind"
       v@standard_name = "northward_wind"
       v@units         = "m s-1"
+      v@coordinates   = "time lat lon alt" ;
 
    psfc = data(:,9)
       psfc@long_name     = "Mean Sea Level Pressure"
       psfc@description   = "Mean Sea Level Pressure"
       psfc@standard_name = "air_pressure_at_sea_level"
       psfc@units         = "Pa"
+      psfc@coordinates   = "time lat lon alt" ;
 
    rh=temperature
    rh(:) = relhum(temperature, w, psfc)
@@ -219,6 +258,7 @@ do ss = 0, dimsizes(station_id)-1
       rh@description   = "2-m relative humidity"
       rh@standard_name = "relative_humidity"
       rh@units         = "%"
+      rh@coordinates   = "time lat lon alt" ;
 
    rh = where(rh .lt. 0, 0, rh)
    rh = where(rh .gt.100,100,rh)
@@ -229,9 +269,10 @@ do ss = 0, dimsizes(station_id)-1
    dewpoint(:) = dewtemp_trh(temperature, rh)
    dewpoint@long_name     = "2-m Dewpoint Temp"
    dewpoint@description   = "2-m Dewpoint Temp"
-   dewpoint@standard_name = "2-m dewpoint Temp"
+   dewpoint@standard_name = "dew_point_temperature"
    dewpoint@units = "K"
    dewpoint!0 = "time"
+   dewpoint@coordinates   = "time lat lon alt" ;
    printVarSummary(dewpoint)
    printVarSummary(temperature)
 
@@ -240,6 +281,7 @@ do ss = 0, dimsizes(station_id)-1
       glw@description   = "Surface Downward Longwave Radiation"
       glw@standard_name = "surface_net_downward_longwave_flux"
       glw@units         = "W m-2"
+      glw@coordinates   = "time lat lon alt" ;
 
 
    gsw = data(:,11)
@@ -247,24 +289,28 @@ do ss = 0, dimsizes(station_id)-1
       gsw@description   = "Surface Downward Shortwave Radiation"
       gsw@standard_name = "surface_net_downward_shortwave_flux"
       gsw@units         = "W m-2"
+      gsw@coordinates   = "time lat lon alt" ;
 
    hfx = data(:,12)
       hfx@long_name     = "Surface Sensible Heat Flux"
       hfx@description   = "Surface Sensible Heat Flux"
       hfx@standard_name = "surface_upward_sensible_heat_flux"
       hfx@units         = "W m-2"
+      hfx@coordinates   = "time lat lon alt" ;
 
    lfx = data(:,13)
       lfx@long_name     = "Surface Latent Heat Flux"
       lfx@description   = "Surface Latent Heat Flux"
       lfx@standard_name = "surface_upward_latent_heat_flux"
       lfx@units         = "W m-2"
+      lfx@coordinates   = "time lat lon alt" ;
 
    tskin = data(:,14)
       tskin@long_name     = "Surface Skin Temperature"
       tskin@description   = "Surface Skin Temperature"
       tskin@standard_name = "surface_temperature"
       tskin@units         = "K"
+      tskin@coordinates   = "time lat lon alt" ;
 
    tsoil_top = data(:,15)
       tsoil_top@long_name     = "Topmost Soil Layer Temperature"
@@ -272,24 +318,28 @@ do ss = 0, dimsizes(station_id)-1
       tsoil_top@standard_name = "soil_temperature"
       tsoil_top@comment1      = "depth from surface to 10 cm below surface for NOAH land model"
       tsoil_top@units         = "K"
+      tsoil_top@coordinates   = "time lat lon alt" ;
 
    rainc = data(:,16)
       rainc@long_name     = "Cumulus Cumulative Precipitation"
       rainc@description   = "Cumulus Cumulative Precipitation"
       rainc@standard_name = "convective_precipitation_amount"
       rainc@units         = "kg m-2"
+      rainc@coordinates   = "time lat lon alt" ;
 
     rainnc = data(:,17)
       rainnc@long_name     = "Grid-Scale Cumulative Precipitation"
       rainnc@description   = "Grid-Scale Cumulative Precipitation"
       rainnc@standard_name = "stratiform_precipitation_amount"
       rainnc@units         = "kg m-2"
+      rainnc@coordinates   = "time lat lon alt" ;
 
    clw = data(:,18)
       clw@long_name     = "Columnar Water Vapor"
       clw@description   = "Columnar Water Vapor"
       clw@standard_name = "atmosphere_mass_content_of_water_vapor"
       clw@units         = "kg m-2"
+      clw@coordinates   = "time lat lon alt" ;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -310,6 +360,7 @@ do ss = 0, dimsizes(station_id)-1
       data@domain  = domain
       data@grid_x  = grid_x
       data@grid_y  = grid_y
+      data@coordinates   = "time sigma lat lon" ;
 
 
    u_profile = data(:,1:dimsizes(sigma))
@@ -340,6 +391,7 @@ do ss = 0, dimsizes(station_id)-1
       data@domain  = domain
       data@grid_x  = grid_x
       data@grid_y  = grid_y
+      data@coordinates   = "time sigma lat lon" ;
 
    v_profile = data(:,1:dimsizes(sigma))
       v_profile!1     = "sigma"
@@ -380,7 +432,7 @@ do ss = 0, dimsizes(station_id)-1
       data@lon     = longitude_wrf
       data@lat_sta = latitude_sta
       data@lon_sta = longitude_sta
-      data@elev    = elev
+      data@alt      = elev
       data@domain  = domain
       data@grid_x  = grid_x
       data@grid_y  = grid_y
@@ -412,6 +464,7 @@ do ss = 0, dimsizes(station_id)-1
       data@domain  = domain
       data@grid_x  = grid_x
       data@grid_y  = grid_y
+      data@coordinates   = "time sigma lat lon" ;
 
    specific_humidity_profile = data(:,1:dimsizes(sigma))
       specific_humidity_profile!1     = "sigma"
@@ -438,6 +491,7 @@ do ss = 0, dimsizes(station_id)-1
       data@domain  = domain
       data@grid_x  = grid_x
       data@grid_y  = grid_y
+      data@coordinates   = "time sigma lat lon" ;
 
    geopotential_height_profile = data(:,1:dimsizes(sigma))
       geopotential_height_profile!1     = "sigma"
@@ -466,6 +520,7 @@ if (tke_on) then
       data@domain  = domain
       data@grid_x  = grid_x
       data@grid_y  = grid_y
+      data@coordinates   = "time sigma lat lon" ;
 
    turbulent_kinetic_energy_profile = data(:,1:dimsizes(sigma))
       turbulent_kinetic_energy_profile!1     = "sigma"
@@ -499,6 +554,7 @@ if (soils_on) then
       data@domain  = domain
       data@grid_x  = grid_x
       data@grid_y  = grid_y
+      data@coordinates   = "time soil_levels lat lon" ;
 
    soil_moisture_profile = data(:,1:dimsizes(soil_levels))
       soil_moisture_profile!1           = "soil_levels"
@@ -528,6 +584,7 @@ if (soils_on) then
          data@domain  = domain
          data@grid_x  = grid_x
          data@grid_y  = grid_y
+         data@coordinates   = "time soil_levels lat lon" ;
 
       soil_temperature_profile = data(:,1:dimsizes(soil_levels))
          soil_temperature_profile!1           = "soil_levels"
@@ -549,60 +606,66 @@ end if
               datestring + "_" + hourstring + "_" + station_id(ss) + ".nc"
 
     system("rm -frv "+dir_for_wrf_output + wrf_file)
-    nc              = addfile(dir_for_wrf_output + wrf_file, "c")
+    nc                = addfile(dir_for_wrf_output + wrf_file, "c")
       nc@station_id   = station_id(ss)
       nc@station_name = station_name
-      nc@lat     = latitude_wrf
-      nc@lon     = longitude_wrf
-      nc@lat_sta = latitude_sta
-      nc@lon_sta = longitude_sta
-      nc@elev    = elev
-
+      nc@featureType  = "timeSeries"
+      nc@Conventions  = "CF-1.6"
+      nc@lat          = latitude_wrf
+      nc@lon          = longitude_wrf
+      nc@lat_sta      = latitude_sta
+      nc@lon_sta      = longitude_sta
+      nc@elev         = elev
       nc@domain       = domain
+      delete(time@_FillValue)
 
-    nc->time        = time
-    nc->sigma       = sigma
-    nc->soil_levels = soil_levels
-    nc->temperature = temperature
-    nc->rh          = rh
-    nc->dewpoint    = dewpoint
-    nc->q           = q
-    nc->u           = u
-    nc->v           = v
-    nc->psfc        = psfc
-    nc->glw         = glw
-    nc->gsw         = gsw
-    nc->hfx         = hfx
-    nc->lfx         = lfx
-    nc->tskin       = tskin
-    nc->tsoil_top   = tsoil_top
-    nc->rainc       = rainc
-    nc->rainnc      = rainnc
-    nc->clw         = clw
-    nc->ptop        = ptop
+      nc->time         = time
+      nc->sigma        = sigma
+      nc->soil_levels  = soil_levels
+      nc->lat          = latitude_wrf
+      nc->lon          = longitude_wrf
+      nc->alt          = elev
+      nc->station_name = station_name
+      nc->temperature  = temperature
+      nc->rh           = rh
+      nc->dewpoint     = dewpoint
+      nc->q            = q
+      nc->u            = u
+      nc->v            = v
+      nc->psfc         = psfc
+      nc->glw          = glw
+      nc->gsw          = gsw
+      nc->hfx          = hfx
+      nc->lfx          = lfx
+      nc->tskin        = tskin
+      nc->tsoil_top    = tsoil_top
+      nc->rainc        = rainc
+      nc->rainnc       = rainnc
+      nc->clw          = clw
+      nc->ptop         = ptop
 
-    nc->u_wind_profile                      = u_profile
-    nc->v_wind_profile                      = v_profile
-    nc->wind_speed_profile                  = wind_speed_profile
-    nc->wind_direction_profile              = wind_dir_profile
-    nc->potential_temperature_profile       = potential_temperature_profile
-    nc->specific_humidity_profile           = specific_humidity_profile
-    nc->geopotential_height_profile         = geopotential_height_profile
+      nc->u_wind_profile                      = u_profile
+      nc->v_wind_profile                      = v_profile
+      nc->wind_speed_profile                  = wind_speed_profile
+      nc->wind_direction_profile              = wind_dir_profile
+      nc->potential_temperature_profile       = potential_temperature_profile
+      nc->specific_humidity_profile           = specific_humidity_profile
+      nc->geopotential_height_profile         = geopotential_height_profile
 
-    if (tke_on) then
-       nc->turbulent_kinetic_energy_profile = turbulent_kinetic_energy_profile
-    end if
+      if (tke_on) then
+         nc->turbulent_kinetic_energy_profile = turbulent_kinetic_energy_profile
+      end if
 
-    if (soils_on) then
-       nc->soil_temperature_profile = soil_temperature_profile
-       nc->soil_moisture_profile    = soil_moisture_profile
-    end if
+      if (soils_on) then
+         nc->soil_temperature_profile = soil_temperature_profile
+         nc->soil_moisture_profile    = soil_moisture_profile
+      end if
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-printVarSummary(time)
+   printVarSummary(time)
 
-delete(data)
+   delete(data)
 end do
 
 end

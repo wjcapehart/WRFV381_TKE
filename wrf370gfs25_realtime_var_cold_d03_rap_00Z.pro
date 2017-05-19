@@ -697,8 +697,8 @@
               SPAWN, 'rm -v ' + WRF_FILENAMES(TT)
 
 
-          SPAWN, "ncl "+wrf_home_dir+"ts2nc_autoread_d01.ncl"
-          SPAWN, "ncl "+wrf_home_dir+"ts2nc_autoread_d02.ncl"
+          SPAWN, "export NCL_ROOT=/usr  &&  ncl "+wrf_home_dir+"ts2nc_autoread_d01.ncl"
+          SPAWN, "export NCL_ROOT=/usr  &&  ncl "+wrf_home_dir+"ts2nc_autoread_d02.ncl"
 
           ; SPAWN, 'gzip -frv9 wrfout*.nc '
 

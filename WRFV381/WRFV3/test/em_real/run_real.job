@@ -26,7 +26,7 @@ rm -frv  ./rsl* ./K???.d?.??
 uname -a
 uname -a >& ./nodeinuse.txt
 date -u
-#  nohup mpirun  -np 64 ./real.exe
+##  nohup mpirun  -np 64 ./real.exe
 nohup ./real.exe >& real.log 
 echo End REAL Run
 date -u

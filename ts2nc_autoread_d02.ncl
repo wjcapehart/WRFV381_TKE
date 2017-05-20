@@ -8,7 +8,7 @@
 load "/usr/lib/ncarg/nclscripts/csm/gsn_code.ncl"
 load "/usr/lib/ncarg/nclscripts/csm/gsn_csm.ncl"
 load "/usr/lib/ncarg/nclscripts/wrf/WRF_contributed.ncl"
-load "/usrlib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
+load "/usr/lib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
 load "/usr/lib/ncarg/nclscripts/csm/contributed.ncl"
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

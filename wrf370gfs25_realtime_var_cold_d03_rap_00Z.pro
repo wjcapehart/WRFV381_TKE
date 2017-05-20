@@ -677,28 +677,37 @@
           time_end_in_sec_wrf       = systime(/seconds)
           time_start_in_sec_wrfpost = systime(/seconds)
 
+
+
           WRF_FILENAMES    = "wrfout_d01_" +  SUBOUT_DATE_STRING(0)
           WRF_SM_FILENAMES = "nam02_d01_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
           FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
-              SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' ' + WRF_SM_FILENAMES(TT)
+              SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  nohup /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' ' + WRF_SM_FILENAMES(TT)
 
 
           WRF_FILENAMES    = "wrfout_d02_" +  SUBOUT_DATE_STRING(0)
           WRF_SM_FILENAMES =  "nam02_d02_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
           FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
-              SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' ' + WRF_SM_FILENAMES(TT)
+              SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" && nohup /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' ' + WRF_SM_FILENAMES(TT)
 
 ;          WRF_FILENAMES    = "wrfout_d03_" +  SUBOUT_DATE_STRING(0)
 ;          WRF_SM_FILENAMES =  "nam02_d03_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
 ;          FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
 ;              SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' ' + WRF_SM_FILENAMES(TT)
 
+          SPAWN, 'ls -al nam*nc'
+
           FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
               SPAWN, 'rm -v ' + WRF_FILENAMES(TT)
 
+          SPAWN, 'ls -al wrfout*'
 
-          SPAWN, "export NCL_ROOT=/usr/  &&  ncl "+wrf_home_dir+"ts2nc_autoread_d01.ncl"
-          SPAWN, "export NCL_ROOT=/usr/  &&  ncl "+wrf_home_dir+"ts2nc_autoread_d02.ncl"
+
+          SPAWN, "export NCL_ROOT=/usr/  && nohup ncl "+wrf_home_dir+"ts2nc_autoread_d01.ncl"
+          SPAWN, "export NCL_ROOT=/usr/  && nohup ncl "+wrf_home_dir+"ts2nc_autoread_d02.ncl"
+
+          SPAWN, 'ls -al nam*nc'
+
 
           ; SPAWN, 'gzip -frv9 wrfout*.nc '
 

@@ -494,7 +494,12 @@ END DO
 
    grid%next_ts_time = grid%next_ts_time + 1
 
-   IF ( grid%next_ts_time > grid%ts_buf_size ) CALL write_ts(grid)
+   IF ( grid%next_ts_time > grid%ts_buf_size ) then
+      print*, "    (TSERIES) READY TO ENTER WRITE_TS"
+      CALL write_ts(grid)
+      print*, "    (TSERIES) RETURNING FROM WRITE_TS"
+
+   END IF
 
    print*, "    (TSERIES) leaving calc_ts routine"
 
@@ -627,7 +632,7 @@ SUBROUTINE write_ts( grid )
 
 
    !! wjc Modification 2017-05-20 Adding Surface Layer Fields
-   print*, "    (TSERIES) sending time series values to ts_buf bs",grid%ts_buf_sizes
+   print*, "    (TSERIES) sending time series values to ts_buf bs",grid%ts_buf_size
 
       ts_buf(:,:) = grid%ts_fm(:,:)
       CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_fm(:,:),grid%ts_buf_size*grid%max_ts_locs)
@@ -640,7 +645,7 @@ SUBROUTINE write_ts( grid )
 
       ts_buf(:,:) = grid%ts_br(:,:)
       CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_br(:,:),grid%ts_buf_size*grid%max_ts_locs)
-      print*, "    (TSERIES) done sending time series values to ts_buf bs",grid%ts_buf_sizes
+      print*, "    (TSERIES) done sending time series values to ts_buf bs",grid%ts_buf_size
 
 #endif
 

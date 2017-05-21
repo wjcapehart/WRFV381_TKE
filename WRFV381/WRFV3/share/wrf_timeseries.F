@@ -480,6 +480,12 @@ SUBROUTINE calc_ts( grid )
          grid%ts_br(n,i)      = 1.E30
          print*, "    (TSERIES) done setting surface layer fields to fill value II"
 #endif
+         grid%ts_tsk(n,i)  = 1.E30
+         grid%ts_tslb(n,i) = 1.E30
+
+
+      END IF
+END DO
 
 #if (EM_CORE == 1)
    DEALLOCATE(p8w, earth_u_profile, earth_v_profile)

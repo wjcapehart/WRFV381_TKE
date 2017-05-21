@@ -410,12 +410,12 @@ SUBROUTINE calc_ts( grid )
          grid%ts_tsk(n,i)  = grid%tsk(ix,iy)
 
          !! wjc Modiciation 2017-05-20  Adding Surface Layer Time series
-         print*, "    (TSERIES) processing surface layer fields"
+         print*, "    (TSERIES) processing surface layer fields i",i," n",n
          grid%ts_fm(n,i)      = grid%FM(ix,iy)
          grid%ts_fh(n,i)      = grid%FH(ix,iy)
          grid%ts_zoL(n,i)     = grid%ZOL(ix,iy)
          grid%ts_br(n,i)      = grid%BR(ix,iy)
-         print*, "    (TSERIES) done processing surface layer fields"
+         print*, "    (TSERIES) done processing surface layer fields i",i," n",n
 
 
 #else
@@ -423,6 +423,7 @@ SUBROUTINE calc_ts( grid )
 #endif
          grid%ts_tslb(n,i) = grid%tslb(ix,1,iy)
 
+         print*, "    (TSERIES) closing polulation area i",i," n",n
 
 
 
@@ -446,13 +447,13 @@ SUBROUTINE calc_ts( grid )
          END DO
 
          !! wjc Modiciation 2017-05-20  Adding Surface Layer Time series
-         print*, "    (TSERIES) setting surface layer fields to fill value"
+         print*, "    (TSERIES) setting surface layer fields to fill value i",i," n",n
 
          grid%ts_fm(n,i)      = 1.E30
          grid%ts_fh(n,i)      = 1.E30
          grid%ts_zoL(n,i)     = 1.E30
          grid%ts_br(n,i)      = 1.E30
-         print*, "    (TSERIES) done setting surface layer fields to fill value"
+         print*, "    (TSERIES) done setting surface layer fields to fill value i",i," n",n
 
 
 
@@ -473,18 +474,18 @@ SUBROUTINE calc_ts( grid )
          grid%ts_rainnc(n,i) = 1.E30
 
          !! wjc Modiciation 2017-05-20  Adding Surface Layer Time series
-         print*, "    (TSERIES)  setting surface layer fields to fill value II"
+         print*, "    (TSERIES)  setting surface layer fields to fill value II i",i," n",n
          grid%ts_fm(n,i)      = 1.E30
          grid%ts_fh(n,i)      = 1.E30
          grid%ts_zoL(n,i)     = 1.E30
          grid%ts_br(n,i)      = 1.E30
-         print*, "    (TSERIES) done setting surface layer fields to fill value II"
+         print*, "    (TSERIES) done setting surface layer fields to fill value II i",i," n",n
 #endif
          grid%ts_tsk(n,i)  = 1.E30
          grid%ts_tslb(n,i) = 1.E30
 
 
-      END IF
+   END IF
 END DO
 
 #if (EM_CORE == 1)
@@ -494,6 +495,9 @@ END DO
    grid%next_ts_time = grid%next_ts_time + 1
 
    IF ( grid%next_ts_time > grid%ts_buf_size ) CALL write_ts(grid)
+
+   print*, "    (TSERIES) leaving calc_ts routine"
+
 
 END SUBROUTINE calc_ts
 
@@ -517,6 +521,9 @@ SUBROUTINE write_ts( grid )
    REAL, ALLOCATABLE, DIMENSION(:,:) :: ts_buf
    CHARACTER (LEN=24) :: ts_profile_filename
    CHARACTER (LEN=26) :: profile_format
+
+   print*, "    (TSERIES) starting write_ts routine"
+
 
    IF ( grid%ntsloc_domain .LE. 0 ) RETURN
 
@@ -620,7 +627,7 @@ SUBROUTINE write_ts( grid )
 
 
    !! wjc Modification 2017-05-20 Adding Surface Layer Fields
-   print*, "    (TSERIES) sending time series values to ts_buf"
+   print*, "    (TSERIES) sending time series values to ts_buf i",i," n",n
 
       ts_buf(:,:) = grid%ts_fm(:,:)
       CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_fm(:,:),grid%ts_buf_size*grid%max_ts_locs)
@@ -633,7 +640,7 @@ SUBROUTINE write_ts( grid )
 
       ts_buf(:,:) = grid%ts_br(:,:)
       CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_br(:,:),grid%ts_buf_size*grid%max_ts_locs)
-      print*, "    (TSERIES) done sending time series values to ts_buf"
+      print*, "    (TSERIES) done sending time series values to ts_buf i",i," n",n
 
 #endif
 
@@ -665,7 +672,7 @@ SUBROUTINE write_ts( grid )
 #if (EM_CORE == 1)
             !! wjc Modification 2017-05-20 Adding Surface Layer Values to Scalar Time Series Output Stream
             !! wjc              2017-05-20 New variables at end of line, new format ,7(e15.7,1x)
-            print*, "    (TSERIES) swriting time series"
+            print*, "    (TSERIES) swriting time series i",i," n",n
             WRITE(UNIT=iunit,FMT='(i2,f13.6,i5,i5,i5,1x,14(f13.5,1x),4(e15.7,1x))')  &
                               grid%id, grid%ts_hour(n,i),                &
                               grid%id_tsloc(i), ix, iy,                  &
@@ -687,7 +694,7 @@ SUBROUTINE write_ts( grid )
                               grid%ts_fh(n,i),                           &
                               grid%ts_zoL(n,i),                          &
                               grid%ts_br(n,i)
-                              print*, "    (TSERIES) done writing time series"
+                              print*, "    (TSERIES) done writing time series i",i," n",n
 #else
             WRITE(UNIT=iunit,FMT='(i2,f13.6,i5,i5,i5,1x,7(f13.5,1x))')   &
                               grid%id, grid%ts_hour(n,i),                &

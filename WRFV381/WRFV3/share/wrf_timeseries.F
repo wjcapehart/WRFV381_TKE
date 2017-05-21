@@ -408,11 +408,6 @@ SUBROUTINE calc_ts( grid )
          grid%ts_rainc(n,i)  = grid%rainc(ix,iy)
          grid%ts_rainnc(n,i) = grid%rainnc(ix,iy)
          grid%ts_tsk(n,i)  = grid%tsk(ix,iy)
-#else
-         grid%ts_tsk(n,i)  = grid%nmm_tsk(ix,iy)
-#endif
-         grid%ts_tslb(n,i) = grid%tslb(ix,1,iy)
-
 
          !! wjc Modiciation 2017-05-20  Adding Surface Layer Time series
          grid%ts_psim(n,i)    = grid%psim(ix,iy)
@@ -423,6 +418,15 @@ SUBROUTINE calc_ts( grid )
          grid%ts_gz1oz0(n,i)  = grid%gz1oz0(ix,iy)
          grid%ts_zoL(n,i)     = grid%zol(ix,iy)
          grid%ts_br(n,i)      = grid%br(ix,iy)
+
+
+#else
+         grid%ts_tsk(n,i)  = grid%nmm_tsk(ix,iy)
+#endif
+         grid%ts_tslb(n,i) = grid%tslb(ix,1,iy)
+
+
+
 
       ELSE
 #if (EM_CORE == 1 )
@@ -470,9 +474,6 @@ SUBROUTINE calc_ts( grid )
          grid%ts_clw(n,i)  = 1.E30
          grid%ts_rainc(n,i)  = 1.E30
          grid%ts_rainnc(n,i) = 1.E30
-#endif
-         grid%ts_tsk(n,i)  = 1.E30
-         grid%ts_tslb(n,i) = 1.E30
 
          !! wjc Modiciation 2017-05-20  Adding Surface Layer Time series
          grid%ts_psim(n,i)    = 1.E30
@@ -483,6 +484,10 @@ SUBROUTINE calc_ts( grid )
          grid%ts_gz1oz0(n,i)  = 1.E30
          grid%ts_zoL(n,i)     = 1.E30
          grid%ts_br(n,i)     = 1.E30
+#endif
+         grid%ts_tsk(n,i)  = 1.E30
+         grid%ts_tslb(n,i) = 1.E30
+
 
       END IF
    END DO
@@ -617,6 +622,34 @@ SUBROUTINE write_ts( grid )
 
    ts_buf(:,:) = grid%ts_rainnc(:,:)
    CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_rainnc(:,:),grid%ts_buf_size*grid%max_ts_locs)
+
+
+   !! wjc Modification 2017-05-20 Adding Surface Layer Fields
+
+      ts_buf(:,:) = grid%ts_psim(:,:)
+      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_psim(:,:),grid%ts_buf_size*grid%max_ts_locs)
+
+      ts_buf(:,:) = grid%ts_psih(:,:)
+      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_psih(:,:),grid%ts_buf_size*grid%max_ts_locs)
+
+      ts_buf(:,:) = grid%ts_fm(:,:)
+      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_fm(:,:),grid%ts_buf_size*grid%max_ts_locs)
+
+      ts_buf(:,:) = grid%ts_fh(:,:)
+      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_fh(:,:),grid%ts_buf_size*grid%max_ts_locs)
+
+      ts_buf(:,:) = grid%ts_wspd(:,:)
+      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_wspd(:,:),grid%ts_buf_size*grid%max_ts_locs)
+
+      ts_buf(:,:) = grid%ts_gz1oz0(:,:)
+      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_gz1oz0(:,:),grid%ts_buf_size*grid%max_ts_locs)
+
+      ts_buf(:,:) = grid%ts_zoL(:,:)
+      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_zoL(:,:),grid%ts_buf_size*grid%max_ts_locs)
+
+      ts_buf(:,:) = grid%ts_br(:,:)
+      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_br(:,:),grid%ts_buf_size*grid%max_ts_locs)
+
 #endif
 
    ts_buf(:,:) = grid%ts_tsk(:,:)
@@ -624,33 +657,6 @@ SUBROUTINE write_ts( grid )
 
    ts_buf(:,:) = grid%ts_tslb(:,:)
    CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_tslb(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
-!! wjc Modification 2017-05-20 Adding Surface Layer Fields
-
-   ts_buf(:,:) = grid%ts_psim(:,:)
-   CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_psim(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
-   ts_buf(:,:) = grid%ts_psih(:,:)
-   CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_psih(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
-   ts_buf(:,:) = grid%ts_fm(:,:)
-   CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_fm(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
-   ts_buf(:,:) = grid%ts_fh(:,:)
-   CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_fh(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
-   ts_buf(:,:) = grid%ts_wspd(:,:)
-   CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_wspd(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
-   ts_buf(:,:) = grid%ts_gz1oz0(:,:)
-   CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_gz1oz0(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
-   ts_buf(:,:) = grid%ts_zoL(:,:)
-   CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_zoL(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
-   ts_buf(:,:) = grid%ts_br(:,:)
-   CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_br(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
 
    DEALLOCATE(ts_buf)
 #endif

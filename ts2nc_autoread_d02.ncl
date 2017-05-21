@@ -29,7 +29,7 @@ begin
 
     domainstring       = ".d02."
 
-    wrf_full_model_file =  "nam02_d02_"+run_date+"_F00.nc"
+    wrf_full_model_file =  "nam02_d02_"+run_date+".nc"
 
     print(wrf_full_model_file)
 

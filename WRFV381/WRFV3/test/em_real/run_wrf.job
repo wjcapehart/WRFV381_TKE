@@ -25,8 +25,8 @@ rm -frv ./nodeinuse.txt ./wrf.log ./wrfout*  ./wrfrst*  ./rsl* ./K???.d?.??
 uname -a
 uname -a >& ./nodeinuse.txt
 date -u
-## nohup mpirun  -np 64 ./wrf.exe
-nohup ./wrf.exe >& ./wrf.log
+nohup mpirun  -np 64 ./wrf.exe
+###  nohup ./wrf.exe >& ./wrf.log
 echo End WRF Run
 date -u
 date -u > /home/wcapehart/WRFV381_TKE/WRFV381/WRFV3/test/em_real/my_wrf_is_done.txt

@@ -21,8 +21,8 @@
 
 
 
-      systime_start = systime(/UTC,/JULIAN)
-        systime_end = systime(/UTC,/JULIAN)+1
+      systime_start = systime(/UTC,/JULIAN) 
+        systime_end = systime(/UTC,/JULIAN)+1 
 
    CALDAT, systime_start,  START_MONTH, START_DAY, START_YEAR
    CALDAT, systime_end,   END_MONTH,   END_DAY,   END_YEAR
@@ -713,7 +713,7 @@
 
           SPAWN, "ssh wjc@kyrill.ias.sdsmt.edu 'mkdir -v "   + WRF_OUTSTORE + " '"
 
-          SPAWN, 'scp -v ./nam*.nc   wjc@kyrill.ias.sdsmt.edu:' + WRF_OUTSTORE
+          SPAWN, 'scp  ./nam*.nc   wjc@kyrill.ias.sdsmt.edu:' + WRF_OUTSTORE
 
           SPAWN, 'rm -frv rsl* wrfout*.nc* wrfrst_d0* nam*nc'
 

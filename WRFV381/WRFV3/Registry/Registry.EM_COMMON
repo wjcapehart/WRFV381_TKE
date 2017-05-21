@@ -670,12 +670,8 @@ state    real   ts_clw          ?!       misc      -         -      -        "TS
 state    real   ts_rainc        ?!       misc      -         -      -        "TS_RAINC"       "Cumulus precip"
 state    real   ts_rainnc       ?!       misc      -         -      -        "TS_RAINNC"      "Grid-scale precip"
 #### wjc Moficiation 2017-05-20 to Time Series to include surface layer fields
-state    real   ts_psim         ?!       misc      -         -      -        "TS_PSIM"        "TIME SERIES FOR SIMILARITY FUNCTION FOR MOMENTUM"
-state    real   ts_psih         ?!       misc      -         -      -        "TS_PSIH"        "TIME SERIES FOR SIMILARITY FUNCTION FOR HEAT"
 state    real   ts_fm           ?!       misc      -         -      -        "TS_FM"          "TIME SERIES FOR INTEGRATED MOMENTUM FUNCTION"
 state    real   ts_fh           ?!       misc      -         -      -        "TS_FH"          "TIME SERIES FOR INTEGRATED HEAT FUNCTION"
-state    real   ts_wspd         ?!       misc      -         -      -        "TS_WPSD"        "TIME SERIES FOR SURFACE LAYER WIND SPEED"
-state    real   ts_gz1oz0       ?!       misc      -         -      -        "TS_GZ1OZ0"      "TIME SERIES FOR SURFACE LAYER LN(Z/Zo)"
 state    real   ts_zoL          ?!       misc      -         -      -        "TS_ZOL"         "TIME SERIES FOR SURFACE LAYER Z/L"
 state    real   ts_br           ?!       misc      -         -      -        "TS_BR"          "TIME SERIES FOR SURFACE LAYER BULK RICHARDSON"
 
@@ -2841,7 +2837,7 @@ package   icedepth_one   seaice_thickness_opt==1     -             state:icedept
 package   notseries   process_time_series==0                 -             -
 ####wjc Modification Capehart 2017-02-27 Adding Variable for TKE Profile
 ####wjc Modification Capehart 2017-05-20 Adding Variables for Surface Layer Characteristics
-package   tseries     process_time_series==1                 -             state:ts_hour,ts_u,ts_v,ts_q,ts_t,ts_psfc,ts_glw,ts_gsw,ts_hfx,ts_lh,ts_tsk,ts_tslb,ts_clw,ts_rainc,ts_rainnc,ts_psim,ts_psih,ts_fm,ts_fh,ts_wspd_sfc,ts_gz1oz0,ts_zoL,ts_br,ts_u_profile,ts_v_profile,ts_gph_profile,ts_th_profile,ts_tke_profile
+package   tseries     process_time_series==1                 -             state:ts_hour,ts_u,ts_v,ts_q,ts_t,ts_psfc,ts_glw,ts_gsw,ts_hfx,ts_lh,ts_tsk,ts_tslb,ts_clw,ts_rainc,ts_rainnc,ts_fm,ts_fh,ts_zoL,ts_br,ts_u_profile,ts_v_profile,ts_gph_profile,ts_th_profile,ts_tke_profile
 
 # lightning
 

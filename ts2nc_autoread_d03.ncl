@@ -113,7 +113,7 @@ begin
 
 
    ; wjc modification 2017-05-20 adding correction for surface layer time series read
-   ncol = 19 + 8
+   ncol = 19 + 4
 
 
 do ss = 0, dimsizes(station_id)-1
@@ -343,49 +343,22 @@ do ss = 0, dimsizes(station_id)-1
       clw@units         = "kg m-2"
       clw@coordinates   = "time lat lon alt" ;
 
-
-
-   psim_sflayer = data(:,19)
-      psim_sflayer@long_name     = "Similarity Function for Momentum for Surface Layer"
-      psim_sflayer@description   = "Similarity Function for Momentum for Surface Layer"
-      psim_sflayer@standard_name = "wind_speed"
-      psim_sflayer@coordinates   = "time lat lon alt" ;
-
-
-   psih_sflayer = data(:,20)
-      psih_sflayer@long_name     = "Similarity Function for Momentum for Surface Layer"
-      psih_sflayer@description   = "Similarity Function for Heat for Surface Layer"
-      psih_sflayer@coordinates   = "time lat lon alt" ;
-
-   fm_sflayer = data(:,21)
+   fm_sflayer = data(:,19)
       fm_sflayer@long_name     = "Integrated Heat Function for Momentum"
       fm_sflayer@description   = "Integrated Heat Function for Momentum"
       fm_sflayer@coordinates   = "time lat lon alt" ;
 
-   fh_sflayer = data(:,22)
+   fh_sflayer = data(:,20)
       fh_sflayer@long_name     = "Integrated Heat Function for Surface Layer"
       fh_sflayer@description   = "Integrated Heat Function for Surface Layer"
       fh_sflayer@coordinates   = "time lat lon alt" ;
 
-
-   wspd_sflayer = data(:,23)
-      wspd_sflayer@long_name     = "Wind Speed for Surface Layer"
-      wspd_sflayer@description   = "Wind Speed for Surface Layer"
-      wspd_sflayer@standard_name = "wind_speed"
-      wspd_sflayer@units         = "m s-1"
-      wspd_sflayer@coordinates   = "time lat lon alt" ;
-
-   gz1oz0_sflayer = data(:,24)
-      gz1oz0_sflayer@long_name     = "ln(z/z0) for Surface Layer"
-      gz1oz0_sflayer@description   = "ln(z/z0) for Surface Layer"
-      gz1oz0_sflayer@coordinates   = "time lat lon alt" ;
-
-   zoL_sflayer = data(:,25)
+   zoL_sflayer = data(:,21)
       zoL_sflayer@long_name     = "z/L for Surface Layer"
       zoL_sflayer@description   = "z/L for Surface Layer"
       zoL_sflayer@coordinates   = "time lat lon alt" ;
 
-   rb_sflayer = data(:,26)
+   rb_sflayer = data(:,22)
       rb_sflayer@long_name     = "Bulk Richardson Number for Surface Layer"
       rb_sflayer@description   = "Bulk Richardson Number for Surface Layer"
       rb_sflayer@coordinates   = "time lat lon alt" ;
@@ -696,12 +669,8 @@ end if
       nc->rainnc         = rainnc
       nc->clw            = clw
       nc->ptop           = ptop
-      nc->psim_sflayer   = psim_sflayer
-      nc->psih_sflayer   = psih_sflayer
       nc->fm_sflayer     = fm_sflayer
       nc->fh_sflayer     = fh_sflayer
-      nc->wspd_sflayer   = wspd_sflayer
-      nc->gz1oz0_sflayer = gz1oz0_sflayer
       nc->zoL_sflayer    = zoL_sflayer
       nc->rb_sflayer     = rb_sflayer
 

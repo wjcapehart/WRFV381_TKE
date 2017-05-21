@@ -410,12 +410,8 @@ SUBROUTINE calc_ts( grid )
          grid%ts_tsk(n,i)  = grid%tsk(ix,iy)
 
          !! wjc Modiciation 2017-05-20  Adding Surface Layer Time series
-         grid%ts_psim(n,i)    = grid%psim(ix,iy)
-         grid%ts_psih(n,i)    = grid%psih(ix,iy)
          grid%ts_fm(n,i)      = grid%fm(ix,iy)
          grid%ts_fh(n,i)      = grid%fh(ix,iy)
-         grid%ts_wspd(n,i)    = grid%wspd(ix,iy)
-         grid%ts_gz1oz0(n,i)  = grid%gz1oz0(ix,iy)
          grid%ts_zoL(n,i)     = grid%zol(ix,iy)
          grid%ts_br(n,i)      = grid%br(ix,iy)
 
@@ -448,12 +444,8 @@ SUBROUTINE calc_ts( grid )
          END DO
 
          !! wjc Modiciation 2017-05-20  Adding Surface Layer Time series
-         grid%ts_psim(n,i)    = 1.E30
-         grid%ts_psih(n,i)    = 1.E30
          grid%ts_fm(n,i)      = 1.E30
          grid%ts_fh(n,i)      = 1.E30
-         grid%ts_wspd(n,i)    = 1.E30
-         grid%ts_gz1oz0(n,i)  = 1.E30
          grid%ts_zoL(n,i)     = 1.E30
          grid%ts_br(n,i)      = 1.E30
 
@@ -476,12 +468,8 @@ SUBROUTINE calc_ts( grid )
          grid%ts_rainnc(n,i) = 1.E30
 
          !! wjc Modiciation 2017-05-20  Adding Surface Layer Time series
-         grid%ts_psim(n,i)    = 1.E30
-         grid%ts_psih(n,i)    = 1.E30
          grid%ts_fm(n,i)      = 1.E30
          grid%ts_fh(n,i)      = 1.E30
-         grid%ts_wspd(n,i)    = 1.E30
-         grid%ts_gz1oz0(n,i)  = 1.E30
          grid%ts_zoL(n,i)     = 1.E30
          grid%ts_br(n,i)     = 1.E30
 #endif
@@ -626,23 +614,11 @@ SUBROUTINE write_ts( grid )
 
    !! wjc Modification 2017-05-20 Adding Surface Layer Fields
 
-      ts_buf(:,:) = grid%ts_psim(:,:)
-      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_psim(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
-      ts_buf(:,:) = grid%ts_psih(:,:)
-      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_psih(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
       ts_buf(:,:) = grid%ts_fm(:,:)
       CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_fm(:,:),grid%ts_buf_size*grid%max_ts_locs)
 
       ts_buf(:,:) = grid%ts_fh(:,:)
       CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_fh(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
-      ts_buf(:,:) = grid%ts_wspd(:,:)
-      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_wspd(:,:),grid%ts_buf_size*grid%max_ts_locs)
-
-      ts_buf(:,:) = grid%ts_gz1oz0(:,:)
-      CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_gz1oz0(:,:),grid%ts_buf_size*grid%max_ts_locs)
 
       ts_buf(:,:) = grid%ts_zoL(:,:)
       CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_zoL(:,:),grid%ts_buf_size*grid%max_ts_locs)
@@ -680,7 +656,7 @@ SUBROUTINE write_ts( grid )
 #if (EM_CORE == 1)
             !! wjc Modification 2017-05-20 Adding Surface Layer Values to Scalar Time Series Output Stream
             !! wjc              2017-05-20 New variables at end of line, new format ,7(e15.7,1x)
-            WRITE(UNIT=iunit,FMT='(i2,f13.6,i5,i5,i5,1x,14(f13.5,1x),8(g15.7,1x))')  &
+            WRITE(UNIT=iunit,FMT='(i2,f13.6,i5,i5,i5,1x,14(f13.5,1x),4(g15.7,1x))')  &
                               grid%id, grid%ts_hour(n,i),                &
                               grid%id_tsloc(i), ix, iy,                  &
                               grid%ts_t(n,i),                            &
@@ -697,12 +673,8 @@ SUBROUTINE write_ts( grid )
                               grid%ts_rainc(n,i),                        &
                               grid%ts_rainnc(n,i),                       &
                               grid%ts_clw(n,i),                          &
-                              grid%ts_psim(n,i),                         &
-                              grid%ts_psih(n,i),                         &
                               grid%ts_fm(n,i),                           &
                               grid%ts_fh(n,i),                           &
-                              grid%ts_wspd(n,i),                         &
-                              grid%ts_gz1oz0(n,i),                       &
                               grid%ts_zoL(n,i),                          &
                               grid%ts_br(n,i)
 #else

@@ -447,13 +447,13 @@ SUBROUTINE calc_ts( grid )
          END DO
 
          !! wjc Modiciation 2017-05-20  Adding Surface Layer Time series
-         print*, "    (TSERIES) setting surface layer fields to fill value i",i," n",n
+         print*, "    (TSERIES) setting surface layer fields to fill value ",i," n",n," bs",grid%ts_buf_size
 
          grid%ts_fm(n,i)      = 1.E30
          grid%ts_fh(n,i)      = 1.E30
          grid%ts_zoL(n,i)     = 1.E30
          grid%ts_br(n,i)      = 1.E30
-         print*, "    (TSERIES) done setting surface layer fields to fill value i",i," n",n
+         print*, "    (TSERIES) done setting surface layer fields to fill value ",i," n",n," bs",grid%ts_buf_size
 
 
 
@@ -474,12 +474,12 @@ SUBROUTINE calc_ts( grid )
          grid%ts_rainnc(n,i) = 1.E30
 
          !! wjc Modiciation 2017-05-20  Adding Surface Layer Time series
-         print*, "    (TSERIES)  setting surface layer fields to fill value II i",i," n",n
+         print*, "    (TSERIES)  setting surface layer fields to fill value II i",i," n",n," bs",grid%ts_buf_size
          grid%ts_fm(n,i)      = 1.E30
          grid%ts_fh(n,i)      = 1.E30
          grid%ts_zoL(n,i)     = 1.E30
          grid%ts_br(n,i)      = 1.E30
-         print*, "    (TSERIES) done setting surface layer fields to fill value II i",i," n",n
+         print*, "    (TSERIES) done setting surface layer fields to fill value II ",i," n",n," bs",grid%ts_buf_size
 #endif
          grid%ts_tsk(n,i)  = 1.E30
          grid%ts_tslb(n,i) = 1.E30
@@ -627,7 +627,7 @@ SUBROUTINE write_ts( grid )
 
 
    !! wjc Modification 2017-05-20 Adding Surface Layer Fields
-   print*, "    (TSERIES) sending time series values to ts_buf i",i," n",n
+   print*, "    (TSERIES) sending time series values to ts_buf bs",grid%ts_buf_sizes
 
       ts_buf(:,:) = grid%ts_fm(:,:)
       CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_fm(:,:),grid%ts_buf_size*grid%max_ts_locs)
@@ -640,7 +640,7 @@ SUBROUTINE write_ts( grid )
 
       ts_buf(:,:) = grid%ts_br(:,:)
       CALL wrf_dm_min_reals(ts_buf(:,:),grid%ts_br(:,:),grid%ts_buf_size*grid%max_ts_locs)
-      print*, "    (TSERIES) done sending time series values to ts_buf i",i," n",n
+      print*, "    (TSERIES) done sending time series values to ts_buf bs",grid%ts_buf_sizes
 
 #endif
 

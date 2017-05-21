@@ -592,8 +592,8 @@
  	     SPAWN, 'rm -frv ' +  WRF_WORKAREA + 'namelist.input'
 
  	     SPAWN, 'cat ' + WRF_WORKAREA + 'NAMELIST.DATESTAMP '   $
-                       + WRF_WORKAREA + 'NAMELIST.ROOT_END.NUDGE > ' $
-                       + WRF_WORKAREA + 'namelist.input'
+                      + WRF_WORKAREA + 'NAMELIST.ROOT_END.NUDGE > ' $
+                      + WRF_WORKAREA + 'namelist.input'
 
  	     SPAWN, 'cat ' + WRF_WORKAREA + 'NAMELIST.DATESTAMP '   $
                        + WRF_WORKAREA + 'NAMELIST.ROOT_END.NUDGE > ' $
@@ -617,13 +617,13 @@
 
 
 
-           spawn, "date -u"
-           while  ( file_test("./my_real_is_done.txt") ne 1)  do begin
+         spawn, "date -u"
+         while  ( file_test("./my_real_is_done.txt") ne 1)  do begin
                  WAIT, 60.
                  spawn, "date -u"
-           endwhile
+         endwhile
          SPAWN, 'ls -al wrfinput_d0* wrfbdy_d01'
-        SPAWN, 'rm -frv ' + WRF_WORKAREA + 'met_em*.nc'
+         SPAWN, 'rm -frv ' + WRF_WORKAREA + 'met_em*.nc'
          SPAWN, 'rm -frv ' + WPS_WORKAREA + 'met_em*.nc'
 
 
@@ -647,36 +647,40 @@
          spawn, 'rm -frv my_wrf_is_done.txt'
 
 
-          PRINT, '--- RUNNING WRF.EXE WITH NUDGING' + SHORTRUN_DATE_STRING_A(T)
-                    SPAWN, ' cp namelist.input.wrf namelist.input'
-                    print, 'time  ' + WRF_WRF_CMD
-          SPAWN, 'time  ' + WRF_WRF_CMD
+         PRINT, '--- RUNNING WRF.EXE WITH NUDGING' + SHORTRUN_DATE_STRING_A(T)
+         SPAWN, ' cp namelist.input.wrf namelist.input'
+         PRINT, 'time  ' + WRF_WRF_CMD
+         SPAWN, 'time  ' + WRF_WRF_CMD
 
 
 
-           spawn, "date -u"
-           while  ( file_test("./my_wrf_is_done.txt") ne 1)  do begin
+         spawn, "date -u"
+         while  ( file_test("./my_wrf_is_done.txt") ne 1)  do begin
                  WAIT, 60.
                  spawn, "date -u"
-           endwhile
+         endwhile
 
-           spawn, 'rm -frv my_wrf_is_done.txt'
+         spawn, 'rm -frv my_wrf_is_done.txt'
 
-          WRF_FILENAMES    = "wrfout_d01_" +  SUBOUT_DATE_STRING
-
-
-       SPAWN, "echo Nudging Enabled > /home/wcapehart/WRFV381_TKE/nudge.status.txt"
+         WRF_FILENAMES    = "wrfout_d01_" +  SUBOUT_DATE_STRING
 
 
-              IF ( FILE_TEST( WRF_FILENAMES(0)) EQ 0) THEN BEGIN
+         SPAWN, "echo Nudging Enabled > /home/wcapehart/WRFV381_TKE/nudge.status.txt"
+
+
+         IF ( FILE_TEST( WRF_FILENAMES(0)) EQ 0) THEN BEGIN
                  SPAWN, "cat rsl.error.0000"
                  PRINT, "WRF  FAILED "
                  STOP
-              ENDIF
+         ENDIF
 
-          time_end_in_sec_wrf       = systime(/seconds)
-          time_start_in_sec_wrfpost = systime(/seconds)
+         time_end_in_sec_wrf       = systime(/seconds)
+         time_start_in_sec_wrfpost = systime(/seconds)
 
+         SPAWN, "ls -al wrfout*"
+
+
+<<<<<<< Updated upstream
 
 
           WRF_FILENAMES    = "wrfout_d01_" +  SUBOUT_DATE_STRING(0)
@@ -689,15 +693,40 @@
           WRF_SM_FILENAMES =  "nam02_d02_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
           FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
               SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" && nohup /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' ' + WRF_SM_FILENAMES(TT)
+=======
+         WRF_FILENAMES    = "wrfout_d01_" +  SUBOUT_DATE_STRING(0)
+         WRF_SM_FILENAMES = "nam02_d01_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
+         FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
+              SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && '          + $
+                     'export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && ' + $
+                     'export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  '        + $
+                     '/opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' ' + WRF_SM_FILENAMES(TT)
+
+
+         WRF_FILENAMES    = "wrfout_d02_" +  SUBOUT_DATE_STRING(0)
+         WRF_SM_FILENAMES =  "nam02_d02_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
+         FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
+            SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && '          + $
+                   'export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && ' + $
+                   'export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  '        + $
+                   '/opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' ' + WRF_SM_FILENAMES(TT)
+
+         SPAWN, "ls -al nam02*"
+
+>>>>>>> Stashed changes
 
 ;          WRF_FILENAMES    = "wrfout_d03_" +  SUBOUT_DATE_STRING(0)
 ;          WRF_SM_FILENAMES =  "nam02_d03_" +  SUBOUT_DATE_STRING_SM(0) + ".nc"
 ;          FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
 ;              SPAWN, 'export NETCDF=/opt/package/netcdf/netcdf-4.3.3.1 && export LD_LIBRARY_PATH="${NETCDF}/lib:${LD_LIBRARY_PATH}" && export LD_RUN_PATH="${NETCDF}/lib:${LD_RUN_PATH}" &&  /opt/package/netcdf/netcdf-4.3.3.1/bin/nccopy -d 7 -s -u '  + WRF_FILENAMES(TT) + ' ' + WRF_SM_FILENAMES(TT)
 
+<<<<<<< Updated upstream
           SPAWN, 'ls -al nam*nc'
 
           FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
+=======
+         FOR TT = 0L,NT_SUBOUTFILES-1L DO $    ;  NT_SUBOUTFILES-1L DO $
+>>>>>>> Stashed changes
               SPAWN, 'rm -v ' + WRF_FILENAMES(TT)
 
           SPAWN, 'ls -al wrfout*'
@@ -708,16 +737,28 @@
 
           SPAWN, 'ls -al nam*nc'
 
+<<<<<<< Updated upstream
+=======
+         SPAWN, "export NCL_ROOT=/usr/  &&  ncl "+wrf_home_dir+"ts2nc_autoread_d01.ncl"
+         SPAWN, "export NCL_ROOT=/usr/  &&  ncl "+wrf_home_dir+"ts2nc_autoread_d02.ncl"
+
+         SPAWN, "ls -al nam02*_????.nc"
+
+>>>>>>> Stashed changes
 
           ; SPAWN, 'gzip -frv9 wrfout*.nc '
 
-          SPAWN, "ssh wjc@kyrill.ias.sdsmt.edu 'mkdir -v "   + WRF_OUTSTORE + " '"
+         SPAWN, "ssh wjc@kyrill.ias.sdsmt.edu 'mkdir -v "   + WRF_OUTSTORE + " '"
 
+<<<<<<< Updated upstream
           SPAWN, 'scp  ./nam*.nc   wjc@kyrill.ias.sdsmt.edu:' + WRF_OUTSTORE
+=======
+         SPAWN, 'scp ./nam*.nc   wjc@kyrill.ias.sdsmt.edu:' + WRF_OUTSTORE
+>>>>>>> Stashed changes
 
-          SPAWN, 'rm -frv rsl* wrfout*.nc* wrfrst_d0* nam*nc'
+         SPAWN, 'rm -frv rsl* wrfout*.nc* wrfrst_d0* nam*nc'
 
-          FOR TT = 0L, NT_UNGRIB-1L DO $
+         FOR TT = 0L, NT_UNGRIB-1L DO $
              SPAWN, 'rm -frv ' + WPS_WORKAREA + GRIB_FILE_LOCAL(TT)
 
    ENDFOR

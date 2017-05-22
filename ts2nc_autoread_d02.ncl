@@ -604,7 +604,11 @@ end if
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-    wrf_file= "wrfout_d" + sprinti("%0.2i", tointeger(domain)) + "_" + \
+    setfileoption("nc","Format","NetCDF4")  ; these are going to be big files
+    setfileoption("nc","CompressionLevel",5)
+
+
+    wrf_file= "nam02_d" + sprinti("%0.2i", tointeger(domain)) + "_" + \
               datestring + "_" + hourstring + "_" + station_id(ss) + ".nc"
 
     system("rm -frv "+dir_for_wrf_output + wrf_file)

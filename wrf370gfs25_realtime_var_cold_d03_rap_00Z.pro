@@ -702,11 +702,11 @@
 
 
       SPAWN, "export NCL_ROOT=/home/wcapehart/ && "                      + $
-             "ncl " + wrf_home_dir + "ts2nc_autoread_d01.ncl"
+             "/home/wcapehart/ncl " + wrf_home_dir + "ts2nc_autoread_d01.ncl"
 
 
       SPAWN, "export NCL_ROOT=/home/wcapehart/  && "                      + $
-             "ncl " + wrf_home_dir + "ts2nc_autoread_d02.ncl"
+             "/home/wcapehart/ncl " + wrf_home_dir + "ts2nc_autoread_d02.ncl"
 
 
       SPAWN, "ls -al nam02*.nc"

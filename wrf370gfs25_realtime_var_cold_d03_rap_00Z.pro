@@ -717,7 +717,7 @@
 
       SPAWN, 'scp ./nam*.nc   wjc@kyrill.ias.sdsmt.edu:' + WRF_OUTSTORE
 
-      SPAWN, 'rm -frv rsl* wrfout*.nc* wrfrst_d0* nam*nc'
+      SPAWN, 'rm -frv rsl* wrfout* wrfrst_d0* nam*nc'
 
       FOR TT = 0L, NT_UNGRIB-1L DO $
          SPAWN, 'rm -frv ' + WPS_WORKAREA + GRIB_FILE_LOCAL(TT)

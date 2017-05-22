@@ -5,11 +5,11 @@
 ;
 ; $NCARG_ROOT is /usr on gamow
 ;
-load "/usr/lib/ncarg/nclscripts/csm/gsn_code.ncl"
-load "/usr/lib/ncarg/nclscripts/csm/gsn_csm.ncl"
-load "/usr/lib/ncarg/nclscripts/wrf/WRF_contributed.ncl"
-load "/usr/lib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
-load "/usr/lib/ncarg/nclscripts/csm/contributed.ncl"
+load "/home/wcapehart/lib/ncarg/nclscripts/csm/gsn_code.ncl"
+load "/home/wcapehart/lib/ncarg/nclscripts/csm/gsn_csm.ncl"
+load "/home/wcapehart/lib/ncarg/nclscripts/wrf/WRF_contributed.ncl"
+load "/home/wcapehart/lib/ncarg/nclscripts/wrf/WRFUserARW.ncl"
+load "/home/wcapehart/lib/ncarg/nclscripts/csm/contributed.ncl"
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

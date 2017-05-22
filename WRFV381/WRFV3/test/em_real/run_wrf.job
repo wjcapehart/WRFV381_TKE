@@ -5,7 +5,7 @@
 #PBS -m abe
 #PBS -M William.Capehart@sdsmt.edu
 
-source ~/bin/loadpackage.sh openmpi 
+source ~/bin/loadpackage.sh openmpi
 
 cd /home/wcapehart/WRFV381_TKE/WRFV381/WRFV3/test/em_real
 export OMP_NUM_THREADS=64
@@ -26,6 +26,7 @@ uname -a
 uname -a >& ./nodeinuse.txt
 date -u
 nohup mpirun  -np 64 ./wrf.exe
+## nohup ./wrf.exe >& wrf.log
 echo End WRF Run
 date -u
 date -u > /home/wcapehart/WRFV381_TKE/WRFV381/WRFV3/test/em_real/my_wrf_is_done.txt

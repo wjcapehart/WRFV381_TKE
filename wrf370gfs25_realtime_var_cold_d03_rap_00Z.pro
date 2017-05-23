@@ -640,6 +640,13 @@
       WRF_INIT_INFO = FILE_INFO("./wrfinput_d01")
       HELP,WRF_INIT_INFO
 
+      WRF_INIT_INFO = FILE_INFO("./wrfinput_d02")
+      HELP,WRF_INIT_INFO
+
+      WRF_INIT_INFO = FILE_INFO("./wrfbdy_d01")
+      HELP,WRF_INIT_INFO
+
+
       time_end_in_sec_wrfprep = SYSTIME(/seconds)
       time_start_in_sec_wrf = SYSTIME(/seconds)
 

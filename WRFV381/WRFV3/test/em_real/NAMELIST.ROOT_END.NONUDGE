@@ -1,5 +1,5 @@
 
-&domains                 
+&domains
 time_step                = 45,
 time_step_fract_num      = 0,
 time_step_fract_den      = 1,
@@ -25,15 +25,20 @@ nproc_x = 8,
 nproc_y = 8,
 /
 
+<<<<<<< HEAD
 tile_sz_x                = 8,
 tile_sz_y                = 8,
 
+=======
+>>>>>>> 2017-05-20_Control
 nproc_x = 8,
 nproc_y = 8,
 
+tile_sz_x = 8,
+tile_sz_y = 8,
 
 
-&physics                 
+&physics
 mp_physics               = 8,        8,        8,
 ra_lw_physics            = 4,        4,        4,
 ra_sw_physics            = 4,        4,        4,
@@ -64,10 +69,10 @@ shadlen                  = 25000.,
 icloud_bl                = 0,
 /
 
-&fdda                    
+&fdda
 /
 
-&dynamics                
+&dynamics
 w_damping                = 1,
 diff_opt                 = 1,1,1,
 km_opt                   = 4,4,4,
@@ -84,7 +89,7 @@ moist_adv_opt            = 1,        1,        1,
 scalar_adv_opt           = 1,        1,        1,
 /
 
-&bdy_control             
+&bdy_control
 spec_bdy_width           = 5,
 spec_zone                = 1,
 relax_zone               = 4,
@@ -92,11 +97,10 @@ specified                = .true.,  .false.,  .false.,
 nested                   = .false.,  .true.,   .true.,
 /
 
-&grib2                   
+&grib2
 /
 
-&namelist_quilt          
+&namelist_quilt
 nio_tasks_per_group      = 0,
 nio_groups               = 1,
 /
-                                                                                                                                                      

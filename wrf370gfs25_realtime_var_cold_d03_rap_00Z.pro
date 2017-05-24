@@ -708,11 +708,11 @@
          SPAWN, 'rm -v ' + WRF_FILENAMES(TT)
 
 
-      SPAWN, "export NCL_ROOT=/home/wcapehart/ && "                      + $
+      SPAWN, "source /home/wcapehart/.bashrc && "                      + $
              "/home/wcapehart/bin/ncl " + wrf_home_dir + "ts2nc_autoread_d01.ncl"
 
 
-      SPAWN, "export NCL_ROOT=/home/wcapehart/  && "                      + $
+      SPAWN,  "source /home/wcapehart/.bashrc && "                      + $
              "/home/wcapehart/bin/ncl " + wrf_home_dir + "ts2nc_autoread_d02.ncl"
 
 

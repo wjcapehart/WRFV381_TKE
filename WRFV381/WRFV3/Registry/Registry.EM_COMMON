@@ -681,7 +681,8 @@ state    real   ts_tke_profile ?!k       misc      -         -      -        "TS
 ####wjc Modification Capehart 2017-04-28 Adding Variable for Soil Profile
 state    real   ts_sh20_profile ?!l       misc      -         -      -        "TS_SH2O_PROFILE" "Soil Liquid Water, vertical profile"
 state    real   ts_tslb_profile ?!l       misc      -         -      -        "TS_TSLB_PROFILE" "Soil Temperature, vertical profile"
-
+####wjc Modification Capehart 2017-05-24 Adding Vertical Velocity Profile
+state    real   ts_w_profile    ?!l       misc      -         -      -        "TS_W_PROFILE" "Wind w-Component, earth relative, vertical profile"
 
 # urban model variables
 state    real   DZR             l        em      -         Z     r        "DZR"            "THICKNESSES OF ROOF LAYERS"                      "m"
@@ -2829,7 +2830,7 @@ package   icedepth_one   seaice_thickness_opt==1     -             state:icedept
 #Time series options for text output
 package   notseries   process_time_series==0                 -             -
 ####wjc Modification Capehart 2017-02-27 Adding Variable for TKE Profile
-package   tseries     process_time_series==1                 -             state:ts_hour,ts_u,ts_v,ts_q,ts_t,ts_psfc,ts_glw,ts_gsw,ts_hfx,ts_lh,ts_tsk,ts_tslb,ts_clw,ts_rainc,ts_rainnc,ts_u_profile,ts_v_profile,ts_gph_profile,ts_th_profile,ts_qv_profile,ts_tke_profile,ts_sh20_profile,ts_tslb_profile
+package   tseries     process_time_series==1                 -             state:ts_hour,ts_u,ts_v,ts_q,ts_t,ts_psfc,ts_glw,ts_gsw,ts_hfx,ts_lh,ts_tsk,ts_tslb,ts_clw,ts_rainc,ts_rainnc,ts_u_profile,ts_v_profile,ts_gph_profile,ts_th_profile,ts_qv_profile,ts_tke_profile,ts_w_profile,ts_sh20_profile,ts_tslb_profile
 
 # lightning
 

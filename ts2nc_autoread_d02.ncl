@@ -421,7 +421,37 @@ do ss = 0, dimsizes(station_id)-1
    wind_dir_profile@standard_name = "wind_from_direction"
    wind_dir_profile@units         = "degree"
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+   delete(data)
+
+   filename = station_id(ss) + domainstring + "WW"
+   print(filename)
+
+   data = readAsciiTable(dir_for_wrf_output + filename, (1+nlevels), "float", 1)
+      data!0       = "time"
+      data&time    =  time
+      data@lat     = latitude_wrf
+      data@lon     = longitude_wrf
+      data@lat_sta = latitude_sta
+      data@lon_sta = longitude_sta
+      data@elev    = elev
+      data@domain  = domain
+      data@grid_x  = grid_x
+      data@grid_y  = grid_y
+      data@coordinates   = "time sigma lat lon" ;
+
+   w_profile = data(:,1:dimsizes(sigma))
+      w_profile!1     = "sigma"
+      w_profile&sigma = sigma
+
+      w_profile@long_name     = "Upward Wind Speed"
+      w_profile@description   = "Upward Wind Speed"
+      w_profile@standard_name = "upward_air_velocity"
+      w_profile@units         = "m s-1"
+
+   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
   delete(data)
 
@@ -651,6 +681,7 @@ end if
 
       nc->u_wind_profile                      = u_profile
       nc->v_wind_profile                      = v_profile
+      nc->w_wind_profile                      = w_profile
       nc->wind_speed_profile                  = wind_speed_profile
       nc->wind_direction_profile              = wind_dir_profile
       nc->potential_temperature_profile       = potential_temperature_profile

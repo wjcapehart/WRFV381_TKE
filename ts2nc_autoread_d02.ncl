@@ -522,7 +522,7 @@ do ss = 0, dimsizes(station_id)-1
       data@elev    = elev
       data@domain  = domain
       data@grid_x  = grid_x
-      data@grid_y  = grid_y
+      data@grid_y  = grid_y 
       data@coordinates   = "time sigma lat lon" ;
 
    geopotential_height_profile = data(:,1:dimsizes(sigma))

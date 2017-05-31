@@ -30,7 +30,7 @@ SUBROUTINE calc_ts_locations( grid )
    CHARACTER (LEN=132) :: message
    CHARACTER (LEN=24) :: ts_profile_filename
    !! wjc modification 2017-02-25 adding TE output stream to list
-   CHARACTER (LEN=2), DIMENSION(9) :: ts_file_endings = (/ 'UU', 'VV', 'PH', 'TH', 'QV', 'TE', 'WW', 'SM', 'ST' /)
+   CHARACTER (LEN=2), DIMENSION(9) :: ts_file_endings = (/ 'UU', 'VV', 'PH', 'TH', 'QV', 'TE', 'WW', 'SM', 'ST' /) 
    TYPE (PROJ_INFO) :: ts_proj
    TYPE (grid_config_rec_type) :: config_flags
 

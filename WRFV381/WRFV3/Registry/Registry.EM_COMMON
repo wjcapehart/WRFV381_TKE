@@ -681,7 +681,7 @@ state    real   ts_tke_profile ?!k       misc      -         -      -        "TS
 ####wjc Modification Capehart 2017-04-28 Adding Variable for Soil Profile
 state    real   ts_sh20_profile ?!l       misc      -         -      -        "TS_SH2O_PROFILE" "Soil Liquid Water, vertical profile"
 state    real   ts_tslb_profile ?!l       misc      -         -      -        "TS_TSLB_PROFILE" "Soil Temperature, vertical profile"
-####wjc Modification Capehart 2017-05-24 Adding Vertical Velocity Profile
+####wjc Modification Capehart 2017-05-24 Adding Vertical Velocity Profile 
 state    real   ts_w_profile    ?!l       misc      -         -      -        "TS_W_PROFILE" "Wind w-Component, earth relative, vertical profile"
 
 # urban model variables

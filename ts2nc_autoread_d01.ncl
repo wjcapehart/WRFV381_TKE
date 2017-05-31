@@ -454,7 +454,7 @@ do ss = 0, dimsizes(station_id)-1
    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-   delete(data)
+   delete(data) 
 
    filename = station_id(ss) + domainstring + "TH"
 
